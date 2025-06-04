@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import OpenAPIURLSession
+import OpenAPIRuntime
 
 struct ContentView: View {
     var body: some View {
