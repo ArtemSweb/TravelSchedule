@@ -352,9 +352,9 @@ paths:
   /v3.0/carrier/:
     get:
       tags:
-        - getCarriers
+        - getCarrier
       summary: Информация о перевозчике
-      operationId: getCarriers
+      operationId: getCarrier
       parameters:
         - name: apikey
           in: query
@@ -392,7 +392,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carriers'
+                $ref: '#/components/schemas/Carrier'
   /v3.0/stations_list/:
     get:
       tags:
