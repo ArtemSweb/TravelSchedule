@@ -8,10 +8,10 @@
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-typealias SheduleBetweenStations = Components.Schemas.SearchSchema
+typealias ScheduleBetweenStations = Components.Schemas.SearchSchema
 
 protocol SearchServiceProtocol {
-    func  getSheduleBetweenStation(from: String, to: String, date: String) async throws -> SheduleBetweenStations
+    func  getSheduleBetweenStation(from: String, to: String) async throws -> ScheduleBetweenStations
 }
 
 final class SearchService: SearchServiceProtocol {
@@ -23,7 +23,7 @@ final class SearchService: SearchServiceProtocol {
         self.apikey = apikey
     }
     
-    func getSheduleBetweenStation(from: String, to: String, date: String) async throws -> SheduleBetweenStations {
+    func getSheduleBetweenStation(from: String, to: String) async throws -> ScheduleBetweenStations {
         let response = try await client.getSearch(query: .init(
             apikey: apikey,
             from: from,

@@ -11,14 +11,30 @@
 		AC98185A2DF0E1130096A885 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = AC9818592DF0E1130096A885 /* OpenAPIURLSession */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		AC9FA6BD2DFA236500BF1AE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC9BFEEB2DE8ED6200CC398E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AC9BFEF22DE8ED6200CC398E;
+			remoteInfo = TravelSchedule;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		AC9BFEF32DE8ED6200CC398E /* TravelSchedule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelSchedule.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AC9FA6B92DFA236500BF1AE8 /* TravelScheduleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelScheduleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AC9BFEF52DE8ED6200CC398E /* TravelSchedule */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TravelSchedule;
+			sourceTree = "<group>";
+		};
+		AC9FA6BA2DFA236500BF1AE8 /* TravelScheduleTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TravelScheduleTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -33,6 +49,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC9FA6B62DFA236500BF1AE8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -40,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				AC9BFEF52DE8ED6200CC398E /* TravelSchedule */,
+				AC9FA6BA2DFA236500BF1AE8 /* TravelScheduleTests */,
 				AC9BFEF42DE8ED6200CC398E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +72,7 @@
 			isa = PBXGroup;
 			children = (
 				AC9BFEF32DE8ED6200CC398E /* TravelSchedule.app */,
+				AC9FA6B92DFA236500BF1AE8 /* TravelScheduleTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -80,6 +105,29 @@
 			productReference = AC9BFEF32DE8ED6200CC398E /* TravelSchedule.app */;
 			productType = "com.apple.product-type.application";
 		};
+		AC9FA6B82DFA236500BF1AE8 /* TravelScheduleTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AC9FA6BF2DFA236500BF1AE8 /* Build configuration list for PBXNativeTarget "TravelScheduleTests" */;
+			buildPhases = (
+				AC9FA6B52DFA236500BF1AE8 /* Sources */,
+				AC9FA6B62DFA236500BF1AE8 /* Frameworks */,
+				AC9FA6B72DFA236500BF1AE8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AC9FA6BE2DFA236500BF1AE8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				AC9FA6BA2DFA236500BF1AE8 /* TravelScheduleTests */,
+			);
+			name = TravelScheduleTests;
+			packageProductDependencies = (
+			);
+			productName = TravelScheduleTests;
+			productReference = AC9FA6B92DFA236500BF1AE8 /* TravelScheduleTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -92,6 +140,10 @@
 				TargetAttributes = {
 					AC9BFEF22DE8ED6200CC398E = {
 						CreatedOnToolsVersion = 16.1;
+					};
+					AC9FA6B82DFA236500BF1AE8 = {
+						CreatedOnToolsVersion = 16.1;
+						TestTargetID = AC9BFEF22DE8ED6200CC398E;
 					};
 				};
 			};
@@ -115,12 +167,20 @@
 			projectRoot = "";
 			targets = (
 				AC9BFEF22DE8ED6200CC398E /* TravelSchedule */,
+				AC9FA6B82DFA236500BF1AE8 /* TravelScheduleTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC9BFEF12DE8ED6200CC398E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC9FA6B72DFA236500BF1AE8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -137,12 +197,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AC9FA6B52DFA236500BF1AE8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		AC98185F2DF0E16F0096A885 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = AC98185E2DF0E16F0096A885 /* OpenAPIGenerator */;
+		};
+		AC9FA6BE2DFA236500BF1AE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AC9BFEF22DE8ED6200CC398E /* TravelSchedule */;
+			targetProxy = AC9FA6BD2DFA236500BF1AE8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -324,6 +396,40 @@
 			};
 			name = Release;
 		};
+		AC9FA6C02DFA236500BF1AE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.artemsweb.TravelScheduleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TravelSchedule.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TravelSchedule";
+			};
+			name = Debug;
+		};
+		AC9FA6C12DFA236500BF1AE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ru.artemsweb.TravelScheduleTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TravelSchedule.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TravelSchedule";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -341,6 +447,15 @@
 			buildConfigurations = (
 				AC9BFF022DE8ED6300CC398E /* Debug */,
 				AC9BFF032DE8ED6300CC398E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AC9FA6BF2DFA236500BF1AE8 /* Build configuration list for PBXNativeTarget "TravelScheduleTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AC9FA6C02DFA236500BF1AE8 /* Debug */,
+				AC9FA6C12DFA236500BF1AE8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
