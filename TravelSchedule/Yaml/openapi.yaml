@@ -392,7 +392,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Carrier'
+                $ref: '#/components/schemas/CarrierResponse'
   /v3.0/stations_list/:
     get:
       tags:
@@ -1173,41 +1173,50 @@ components:
           type: number
         type:
           type: string
-    Carriers:
+    CarrierResponse:
       type: object
       properties:
-        carriers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Carrier'
+        carrier:
+          $ref: '#/components/schemas/Carrier'
     Carrier:
       type: object
       properties:
         code:
-          type: number
+          type: integer
+          description: Код перевозчика в системе Яндекс Расписаний
         contacts:
           type: string
+          description: Контактная информация
         url:
           type: string
+          description: Ссылка на сайт перевозчика
         title:
           type: string
+          description: Название перевозчика
         phone:
           type: string
+          description: Контактный телефон перевозчика
+        address:
+          type: string
+          description: Адрес перевозчика
+        logo:
+          type: string
+          description: Ссылка на логотип перевозчика
+        email:
+          type: string
+          description: Электронная почта перевозчика
         codes:
           type: object
           properties:
             icao:
               type: string
+              description: Код перевозчика в системе ICAO
             sirena:
               type: string
+              description: Код перевозчика в системе Sirena
             iata:
               type: string
-        address:
-          type: string
-        logo:
-          type: string
-        email:
-          type: string
+              description: Код перевозчика в системе IATA
     Copyright:
       type: object
       properties:

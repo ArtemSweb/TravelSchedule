@@ -19,6 +19,10 @@ final class CarrierService: CarrierServiceProtocol {
     private let client: Client
     private let apikey: String
     
+    enum CarrierServiceError: Error {
+        case missingCarrier
+    }
+    
     init(client: Client, apikey: String) {
       self.client = client
       self.apikey = apikey
@@ -29,7 +33,11 @@ final class CarrierService: CarrierServiceProtocol {
             apikey: apikey,
             code: code
         ))
-
-        return try response.ok.body.json
+        
+        guard let carrier = try response.ok.body.json.carrier else {
+            throw CarrierServiceError.missingCarrier
+        }
+        
+        return carrier
     }
 }
