@@ -5,7 +5,6 @@
 //  Created by Артем Солодовников on 11.06.2025.
 //
 
-
 import OpenAPIRuntime
 import OpenAPIURLSession
 import Foundation
@@ -19,15 +18,13 @@ protocol StationListServiceProtocol {
 final class StationListService: StationListServiceProtocol {
     
     private let client: Client
-    private let apikey: String
     
-    init(client: Client, apikey: String) {
+    init(client: Client) {
       self.client = client
-      self.apikey = apikey
     }
     
     func getStationsList() async throws -> StationsList {
-        let response = try await client.getStationsList(query: .init(apikey: apikey))
+        let response = try await client.getStationsList(query: .init())
         let data = try await Data(collecting: response.ok.body.html, upTo: 1024 * 1024 * 100)
         let stationsList = try JSONDecoder().decode(StationsList.self, from: data)
         

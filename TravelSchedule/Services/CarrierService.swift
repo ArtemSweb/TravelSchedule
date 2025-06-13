@@ -17,20 +17,17 @@ protocol CarrierServiceProtocol {
 final class CarrierService: CarrierServiceProtocol {
     
     private let client: Client
-    private let apikey: String
     
     enum CarrierServiceError: Error {
         case missingCarrier
     }
     
-    init(client: Client, apikey: String) {
+    init(client: Client) {
       self.client = client
-      self.apikey = apikey
     }
     
     func getCarrier(code: String) async throws -> Carrier {
         let response = try await client.getCarrier(query: .init(
-            apikey: apikey,
             code: code
         ))
         

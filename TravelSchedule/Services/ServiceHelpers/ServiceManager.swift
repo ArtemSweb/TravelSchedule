@@ -20,8 +20,6 @@ final class ServiceManager {
     private var stationListService: StationListService?
     private var copyrightService: CopyrightService?
     
-    private let apiKey = Constants.apiKey
-    
     private var client: Client? {
         NetworkManager.shared?.client
     }
@@ -31,7 +29,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if searchService == nil {
-            searchService = SearchService(client: client, apikey: apiKey)
+            searchService = SearchService(client: client)
         }
         
         guard let service = searchService else {
@@ -47,7 +45,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if scheduleService == nil {
-            scheduleService = ScheduleService(client: client, apikey: apiKey)
+            scheduleService = ScheduleService(client: client)
         }
         
         guard let service = scheduleService else {
@@ -62,7 +60,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if threadService == nil {
-            threadService = ThreadService(client: client, apikey: apiKey)
+            threadService = ThreadService(client: client)
         }
         
         guard let service = threadService else {
@@ -77,7 +75,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if nearestStationsService == nil {
-            nearestStationsService = NearestStationsService(client: client, apikey: apiKey)
+            nearestStationsService = NearestStationsService(client: client)
         }
         
         guard let service = nearestStationsService else {
@@ -92,7 +90,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if nearestSettlementService == nil {
-            nearestSettlementService = NearestSettlementService(client: client, apikey: apiKey)
+            nearestSettlementService = NearestSettlementService(client: client)
         }
         
         guard let service = nearestSettlementService else {
@@ -107,7 +105,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if carrierService == nil {
-            carrierService = CarrierService(client: client, apikey: apiKey)
+            carrierService = CarrierService(client: client)
         }
         
         guard let service = carrierService else {
@@ -121,7 +119,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if stationListService == nil {
-            stationListService = StationListService(client: client, apikey: apiKey)
+            stationListService = StationListService(client: client)
         }
         
         guard let service = stationListService else {
@@ -136,7 +134,7 @@ final class ServiceManager {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if copyrightService == nil {
-            copyrightService = CopyrightService(client: client, apikey: apiKey)
+            copyrightService = CopyrightService(client: client)
         }
         
         guard let service = copyrightService else {

@@ -12,7 +12,8 @@ struct ClientFactory {
         do {
             return try Client(
                 serverURL: Servers.Server1.url(),
-                transport: URLSessionTransport()
+                transport: URLSessionTransport(),
+                middlewares: [AuthenticationMiddleware(authorizationHeaderFieldValue: Constants.apiKey)]
             )
         } catch {
             print("Failed to create client: \(error.localizedDescription)")

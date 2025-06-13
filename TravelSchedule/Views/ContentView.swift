@@ -26,7 +26,7 @@ struct ContentView: View {
 //            testGetSchedule()
 //            testScheduleThread()
 //            testNearestStations()
-            testCarrier()
+//            testCarrier()
 //            testStationsList()
 //            testCopyright()
         }

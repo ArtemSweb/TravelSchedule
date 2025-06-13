@@ -25,12 +25,9 @@ protocol NearestStationsServiceProtocol {
 final class NearestStationsService: NearestStationsServiceProtocol {
   // Хранит экземпляр сгенерированного клиента
   private let client: Client
-  // Хранит API-ключ (лучше передавать его извне, чем хранить прямо в сервисе)
-  private let apikey: String
   
-  init(client: Client, apikey: String) {
+  init(client: Client) {
     self.client = client
-    self.apikey = apikey
   }
   
   func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
@@ -38,7 +35,6 @@ final class NearestStationsService: NearestStationsServiceProtocol {
     // Имя функции и параметры 'query' напрямую соответствуют операции
     // 'getNearestStations' и её параметрам в openapi.yaml
     let response = try await client.getNearestStations(query: .init(
-        apikey: apikey,     // Передаём API-ключ
         lat: lat,           // Передаём широту
         lng: lng,           // Передаём долготу
         distance: distance  // Передаём дистанцию
