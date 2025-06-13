@@ -22,7 +22,7 @@ struct ContentView: View {
         .onAppear {
             // Вызываем нашу тестовую функцию при появлении View
 //            testFetchStations()
-//            testGetScheduleBetweenStations()
+            testGetScheduleBetweenStation()
 //            testGetSchedule()
 //            testScheduleThread()
 //            testNearestStations()
@@ -63,10 +63,10 @@ func testFetchStations() {
 }
 
 // тест SearchService
-func testGetScheduleBetweenStations() {
+func testGetScheduleBetweenStation() {
     Task {
         do {
-            let response = try await ServiceManager.shared.getScheduleBetweenStations(from: "c213", to: "c215")
+            let response = try await ServiceManager.shared.getScheduleBetweenStation(from: "c213", to: "c215")
             print("Test Success: Loaded schedule between stations (\(response.segments?.count ?? 0) segments).")
         } catch {
             print("Беда!")

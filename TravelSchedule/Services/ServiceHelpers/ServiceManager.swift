@@ -25,7 +25,7 @@ final class ServiceManager {
     }
     
     // MARK: - Schedule Between Stations
-    func getScheduleBetweenStations(from: String, to: String) async throws -> ScheduleBetweenStations {
+    func getScheduleBetweenStation(from: String, to: String) async throws -> ScheduleBetweenStations {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if searchService == nil {
