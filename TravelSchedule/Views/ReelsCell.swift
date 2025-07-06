@@ -9,11 +9,11 @@ import SwiftUI
 
 struct ReelsCell: View {
     var reels: ReelsModel
+    let reelsHeight: Double = 140
+    let reelsWidth: Double = 92
     
     var body: some View {
-        let reelsHeight: Double = 140
-        let reelsWidth: Double = 92
-        
+
         ZStack {
             Image(reels.imageName)
                 .resizable()
@@ -21,7 +21,7 @@ struct ReelsCell: View {
                 .frame(width: reelsWidth, height: reelsHeight)
             
             RoundedRectangle(cornerRadius: 16)
-                .strokeBorder(Color(.blueUni), lineWidth: 4)
+                .strokeBorder(.blueUni, lineWidth: 4)
                 .frame(width: reelsWidth, height: reelsHeight)
         }
     }
@@ -31,5 +31,5 @@ struct ReelsCell: View {
     let mockReels = ReelsModel(imageName: "mock_preview_1")
     return ReelsCell(reels: mockReels)
         .padding()
-        .background(Color(.systemBackground))
+        .background(.background)
 }

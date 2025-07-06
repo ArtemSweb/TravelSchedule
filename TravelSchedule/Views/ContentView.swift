@@ -27,7 +27,7 @@ struct ContentView: View {
                                 .renderingMode(.template)
                         }
                 }
-                .tint(Color(.black))
+                .tint(.blackApp)
                 .navigationDestination(for: RouteEnum.self) { route in
                     switch route {
                     case .cityPicker(let fromField):

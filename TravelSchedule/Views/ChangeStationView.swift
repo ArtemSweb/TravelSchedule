@@ -36,13 +36,13 @@ struct ChangeStationView: View {
         VStack(spacing: 0) {
             CustomSearchBar(text: $searchText, placeholder: "Введите запрос")
             
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 LazyVStack(alignment: .leading) {
                     if filteredItems.isEmpty {
                         VStack {
                             Text("Станция не найдена")
                                 .font(.system(size: 24, weight: .bold))
-                                .foregroundStyle(Color(.black))
+                                .foregroundStyle(.blackApp)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 176)
@@ -62,13 +62,13 @@ struct ChangeStationView: View {
                                 HStack {
                                     Text("\(item)")
                                         .font(.system(size: 17, weight: .regular))
-                                        .foregroundStyle(Color(.black))
+                                        .foregroundStyle(.blackApp)
                                     
                                     Spacer()
                                     
                                     Image(.chevronRight)
                                         .renderingMode(.template)
-                                        .foregroundStyle(Color(.black))
+                                        .foregroundStyle(.blackApp)
                                 }
                                 .padding(.vertical, 19)
                                 .contentShape(Rectangle())
@@ -77,8 +77,9 @@ struct ChangeStationView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 16)
             }
+            .padding(.horizontal, 16)
+            .scrollIndicators(.hidden)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -86,13 +87,13 @@ struct ChangeStationView: View {
                 Button(action: { dismiss() }) {
                     Image(.chevronLeft)
                         .renderingMode(.template)
-                        .foregroundStyle(Color(.black))
+                        .foregroundStyle(.blackApp)
                 }
             }
             ToolbarItem(placement: .principal) {
                 Text("Выбор станции")
                     .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(Color(.black))
+                    .foregroundStyle(.blackApp)
             }
         }
     }

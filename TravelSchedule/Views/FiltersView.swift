@@ -15,12 +15,12 @@ struct FiltersView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Время отправления")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(Color(.black))
+                .foregroundStyle(.blackApp)
             ForEach(PeriodicEnum.allCases, id: \.self) { period in
                 HStack {
                     Text(period.rawValue)
                         .font(.system(size: 17, weight: .regular))
-                        .foregroundStyle(Color(.black))
+                        .foregroundStyle(.blackApp)
                     Spacer()
                     Button(action: {
                         if coordinator.timeFilters.contains(period) {
@@ -32,7 +32,7 @@ struct FiltersView: View {
                         Image(systemName: coordinator.timeFilters.contains(period) ? "checkmark.square.fill" : "square")
                             .resizable()
                             .frame(width: 24, height: 24)
-                            .foregroundStyle(Color(.black))
+                            .foregroundStyle(.blackApp)
                     }
                 }
                 .frame(height: 60)
@@ -45,13 +45,13 @@ struct FiltersView: View {
             HStack {
                 Text("Да")
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(Color(.black))
+                    .foregroundStyle(.blackApp)
                 Spacer()
                 Button(action: { coordinator.showTransfers = true }) {
                     Image(coordinator.showTransfers == true ?  "radio_button_on" : "radio_button_off")
                         .renderingMode(.template)
                         .resizable()
-                        .foregroundStyle(Color(.black))
+                        .foregroundStyle(.blackApp)
                         .frame(width: 24, height: 24)
                 }
                 .frame(height: 60)
@@ -60,13 +60,13 @@ struct FiltersView: View {
             HStack {
                 Text("Нет")
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(Color(.black))
+                    .foregroundStyle(.blackApp)
                 Spacer()
                 Button(action: { coordinator.showTransfers = false }) {
                     Image(coordinator.showTransfers == false ? "radio_button_on" : "radio_button_off")
                         .renderingMode(.template)
                         .resizable()
-                        .foregroundStyle(Color(.black))
+                        .foregroundStyle(.blackApp)
                         .frame(width: 24, height: 24)
                 }
                 .frame(height: 60)
@@ -77,11 +77,11 @@ struct FiltersView: View {
                 Button(action: {coordinator.path.removeLast()}) {
                     Text("Применить")
                         .font(.system(size: 17, weight: .bold))
-                        .foregroundStyle(Color(.whiteUni))
+                        .foregroundStyle(.whiteUni)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 20)
                 }
-                .background(Color(.blueUni))
+                .background(.blueUni)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .padding(.bottom, 24)
             }
@@ -93,7 +93,7 @@ struct FiltersView: View {
                 Button(action: { dismiss() }) {
                     Image(.chevronLeft)
                         .renderingMode(.template)
-                        .foregroundStyle(Color(.black))
+                        .foregroundStyle(.blackApp)
                 }
             }
         }

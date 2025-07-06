@@ -8,6 +8,6 @@
 import Foundation
 
 struct ReelsModel: Identifiable, Hashable {
-    var id = UUID()
-    var imageName: String
+    let id = UUID()
+    let imageName: String
 }

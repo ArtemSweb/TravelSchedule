@@ -15,7 +15,7 @@ struct CustomSearchBar: View {
     var body: some View {
         HStack {
             Image(systemName: "magnifyingglass")
-                .foregroundStyle(Color(.grayUni))
+                .foregroundStyle(.grayUni)
             
             TextField(placeholder, text: $text)
                 .autocapitalization(.none)
@@ -24,13 +24,14 @@ struct CustomSearchBar: View {
             if !text.isEmpty {
                 Button(action: { text = "" }) {
                     Image(systemName: "xmark.circle.fill")
-                        .foregroundStyle(Color(.grayUni))
+                        .foregroundStyle(.grayUni)
                 }
+                .buttonStyle(.plain)
             }
         }
         .padding(10)
-        .background(Color(.appGrey))
-        .cornerRadius(10)
+        .background(.appGrey)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
         .padding(.horizontal, 16)
     }
 }

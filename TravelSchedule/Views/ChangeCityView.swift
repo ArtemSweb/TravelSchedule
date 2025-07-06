@@ -22,18 +22,16 @@ struct ChangeCityView: View {
                   "Омск"]
     
     var filteredItems: [String] {
-        if searchText.isEmpty {
-            return cities
-        } else {
-            return cities.filter { $0.localizedCaseInsensitiveContains(searchText) }
-        }
+        guard !searchText.isEmpty else { return cities }
+        return cities.filter { $0.localizedCaseInsensitiveContains(searchText) }
     }
     
     var body: some View {
+        
         VStack(spacing: 0) {
             CustomSearchBar(text: $searchText, placeholder: "Введите запрос")
             
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 LazyVStack(alignment: .leading) {
                     if !filteredItems.isEmpty {
                         ForEach(filteredItems, id: \.self) { item in
@@ -50,13 +48,13 @@ struct ChangeCityView: View {
                                 HStack {
                                     Text("\(item)")
                                         .font(.system(size: 17, weight: .regular))
-                                        .foregroundStyle(Color(.black))
+                                        .foregroundStyle(.blackApp)
                                     
                                     Spacer()
                                     
                                     Image(.chevronRight)
                                         .renderingMode(.template)
-                                        .foregroundStyle(Color(.black))
+                                        .foregroundStyle(.blackApp)
                                 }
                                 .padding(.vertical, 19)
                                 .contentShape(Rectangle())
@@ -67,7 +65,7 @@ struct ChangeCityView: View {
                         VStack {
                             Text("Город не найден")
                                 .font(.system(size: 24, weight: .bold))
-                                .foregroundStyle(Color(.black))
+                                .foregroundStyle(.blackApp)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 176)
@@ -76,6 +74,7 @@ struct ChangeCityView: View {
                 }
             }
             .padding(.horizontal, 16)
+            .scrollIndicators(.hidden)
         }
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -83,14 +82,14 @@ struct ChangeCityView: View {
                 Button(action: { dismiss() }) {
                     Image(.chevronLeft)
                         .renderingMode(.template)
-                        .foregroundStyle(Color(.black))
+                        .foregroundStyle(.blackApp)
                 }
             }
             
             ToolbarItem(placement: .principal) {
                 Text("Выбор города")
                     .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(Color(.black))
+                    .foregroundStyle(.blackApp)
             }
         }
     }

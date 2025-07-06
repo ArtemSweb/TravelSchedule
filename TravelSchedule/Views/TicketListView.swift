@@ -22,94 +22,156 @@ struct TicketListView: View {
         .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil)
     ]
     
-    
-    var filteredTickets: [TicketModel] {
+    private var filteredTickets: [TicketModel] {
         tickets.filter { ticket in
             // Фильтр по пересадкам
-            if let show = coordinator.showTransfers, show != ticket.withTransfer { return false }
-            // Фильтр по времени
-            if !coordinator.timeFilters.isEmpty {
-                let depHour = Int(ticket.departure.prefix(2)) ?? 0
-                let period: PeriodicEnum = {
-                    switch depHour {
-                    case 6..<12: return .morning
-                    case 12..<18: return .day
-                    case 18..<24: return .evening
-                    default: return .night
-                    }
-                }()
-                if !coordinator.timeFilters.contains(period) { return false }
+            if let show = coordinator.showTransfers, show != ticket.withTransfer {
+                return false
             }
+            
+            // Фильтр по времени
+            guard coordinator.timeFilters.isEmpty else {
+                return coordinator.timeFilters.contains(ticket.departurePeriod)
+            }
+            
             return true
         }
     }
     
+    private var routeTitle: String {
+        "\(coordinator.selectedCityFrom) (\(coordinator.selectedStationFrom)) → \(coordinator.selectedCityTo) (\(coordinator.selectedStationTo))"
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
-            // Заголовок
-            HStack {
-                Text("\(coordinator.selectedCityFrom) (\(coordinator.selectedStationFrom)) → \(coordinator.selectedCityTo) (\(coordinator.selectedStationTo))")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundStyle(Color(.black))
-                    .multilineTextAlignment(.leading)
-                Spacer()
-            }
-            // Расписание
+            RouteHeaderView(title: routeTitle)
+            
             ZStack(alignment: .bottom) {
+                TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
                 
-                ScrollView {
-                    LazyVStack(spacing: 8) {
-                        if filteredTickets.isEmpty {
-                            VStack {
-                                Text("Вариантов нет")
-                                    .font(.system(size: 24, weight: .bold))
-                                    .foregroundStyle(Color(.black))
-                                    .multilineTextAlignment(.center)
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 231)
-                            }
-                        } else {
-                            ForEach(filteredTickets) { ticket in
-                                Button(action: {
-                                    coordinator.path.append(RouteEnum.carrierInfo(ticket))
-                                }) {
-                                    TicketCell(ticket: ticket)
-                                }
-                            }
-                        }
-                    }
-                }
-                
-                Button(action: {coordinator.path.append(RouteEnum.filters)}) {
-                    HStack(spacing: 4) {
-                        Text("Уточнить время")
-                            .font(.system(size: 17, weight: .bold))
-                            .foregroundStyle(Color(.whiteUni))
-                        
-                        if coordinator.isFiltersValid {
-                            Circle()
-                                .foregroundStyle(Color(.redUni))
-                                .frame(width: 8, height: 8)
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
-                }
-                .background(Color(.blueUni))
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .padding(.bottom, 24)
+                FilterButton(coordinator: coordinator)
+                    .padding(.bottom, 24)
             }
         }
         .padding(.horizontal, 16)
         .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: { dismiss() }) {
-                    Image(.chevronLeft)
-                        .renderingMode(.template)
-                        .foregroundStyle(Color(.black))
+                BackButton(action: { dismiss() })
+            }
+        }
+    }
+}
+
+// MARK: - Subviews
+
+private struct RouteHeaderView: View {
+    let title: String
+    
+    var body: some View {
+        HStack {
+            Text(title)
+                .font(.system(size: 24, weight: .bold))
+                .foregroundStyle(.blackApp)
+                .multilineTextAlignment(.leading)
+            Spacer()
+        }
+    }
+}
+
+private struct TicketsScrollView: View {
+    let tickets: [TicketModel]
+    let coordinator: NavCoordinator
+    
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 8) {
+                if tickets.isEmpty {
+                    EmptyTicketsView()
+                } else {
+                    ForEach(tickets) { ticket in
+                        TicketButton(ticket: ticket, action: {
+                            coordinator.path.append(RouteEnum.carrierInfo(ticket))
+                        })
+                    }
                 }
             }
+        }
+    }
+}
+
+private struct EmptyTicketsView: View {
+    var body: some View {
+        VStack {
+            Text("Вариантов нет")
+                .font(.system(size: 24, weight: .bold))
+                .foregroundStyle(.blackApp)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 231)
+        }
+    }
+}
+
+private struct TicketButton: View {
+    let ticket: TicketModel
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            TicketCell(ticket: ticket)
+        }
+    }
+}
+
+private struct FilterButton: View {
+    @ObservedObject var coordinator: NavCoordinator
+    
+    var body: some View {
+        Button(action: {
+            coordinator.path.append(RouteEnum.filters)
+        }) {
+            HStack(spacing: 4) {
+                Text("Уточнить время")
+                    .font(.system(size: 17, weight: .bold))
+                    .foregroundStyle(.whiteUni)
+                
+                if coordinator.isFiltersValid {
+                    Circle()
+                        .foregroundStyle(.redUni)
+                        .frame(width: 8, height: 8)
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 20)
+        }
+        .background(.blueUni)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+private struct BackButton: View {
+    let action: () -> Void
+    
+    var body: some View {
+        Button(action: action) {
+            Image(.chevronLeft)
+                .renderingMode(.template)
+                .foregroundStyle(.blackApp)
+        }
+    }
+}
+
+// MARK: - Extensions
+
+extension TicketModel {
+    var departurePeriod: PeriodicEnum {
+        let depHour = Int(departure.prefix(2)) ?? 0
+        switch depHour {
+        case 6..<12: return .morning
+        case 12..<18: return .day
+        case 18..<24: return .evening
+        default: return .night
         }
     }
 }

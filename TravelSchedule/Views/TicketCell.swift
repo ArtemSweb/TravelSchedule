@@ -20,39 +20,39 @@ struct TicketCell: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(ticket.operatorName)
                         .font(.system(size: 17, weight: .regular))
-                        .foregroundStyle(Color(.blackUni))
+                        .foregroundStyle(.blackUni)
                     if let note = ticket.note {
                         Text(note)
                             .font(.system(size: 17, weight: .regular))
-                            .foregroundStyle(Color(.redUni))
+                            .foregroundStyle(.redUni)
                     }
                 }
                 Spacer()
                 Text(ticket.date)
                     .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(Color(.blackUni))
+                    .foregroundStyle(.blackUni)
             }
             .padding(.bottom, 5)
             HStack {
                 Text(ticket.departure)
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(Color(.blackUni))
+                    .foregroundStyle(.blackUni)
                 Rectangle()
                     .frame(height: 1)
-                    .foregroundStyle(Color(.grayUni))
+                    .foregroundStyle(.grayUni)
                 Text(ticket.duration)
                     .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(Color(.blackUni))
+                    .foregroundStyle(.blackUni)
                 Rectangle()
                     .frame(height: 1)
-                    .foregroundStyle(Color(.grayUni))
+                    .foregroundStyle(.grayUni)
                 Text(ticket.arrival)
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(Color(.blackUni))
+                    .foregroundStyle(.blackUni)
             }
         }
         .padding()
-        .background(Color(.lightGray))
+        .background(.lightGray)
         .clipShape(RoundedRectangle(cornerRadius: 24))
     }
 }

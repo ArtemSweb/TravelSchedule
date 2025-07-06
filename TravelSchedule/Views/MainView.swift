@@ -15,15 +15,17 @@ struct MainView: View {
     
     var body: some View {
         VStack (spacing: 44){
-            ScrollView (.horizontal, showsIndicators: false) {
+            ScrollView (.horizontal) {
                 LazyHStack(alignment: .center, spacing: 12) {
                     ForEach(viewModel.reels) { reels in
                         ReelsCell(reels: reels)
                     }
                 }
-                .padding(.horizontal, 16)
             }
+            .padding(.horizontal, 16)
             .frame(height: 140)
+            .scrollIndicators(.hidden)
+            
             VStack(spacing: 16) {
                 ZStack {
                     Color(UIColor(resource: .blueUni))
@@ -40,8 +42,8 @@ struct MainView: View {
                                      ? coordinator.selectedCityFrom.isEmpty
                                      : coordinator.selectedCityTo.isEmpty
                                     )
-                                    ? Color(.gray)
-                                    : Color(.blackUni)
+                                    ? .gray
+                                    : .blackUni
                                 )
                                 .padding(.vertical, 14)
                                 .padding(.horizontal, 16)
@@ -56,8 +58,8 @@ struct MainView: View {
                                      ? coordinator.selectedCityTo.isEmpty
                                      : coordinator.selectedCityFrom.isEmpty
                                     )
-                                    ? Color(.gray)
-                                    : Color(.blackUni)
+                                    ? .gray
+                                    : .blackUni
                                 )
                                 .padding(.vertical, 14)
                                 .padding(.horizontal, 16)
@@ -73,7 +75,7 @@ struct MainView: View {
                         Button(action: { fromTofromTo.toggle() }) {
                             Image(.changeButtonIcon)
                                 .font(.system(size: 24))
-                                .foregroundStyle(Color(.blue))
+                                .foregroundStyle(.blue)
                                 .padding(6)
                                 .background(.white)
                                 .clipShape(Circle())
@@ -86,14 +88,16 @@ struct MainView: View {
                 .padding(.horizontal, 16)
                 
                 if !coordinator.selectedCityTo.isEmpty && !coordinator.selectedCityFrom.isEmpty {
-                    Button(action: {coordinator.path.append(RouteEnum.tickets)}) {
+                    Button(action: {
+                        coordinator.path.append(RouteEnum.tickets)
+                    }) {
                         Text("Найти")
                             .font(.system(size: 17, weight: .bold))
-                            .foregroundStyle(Color(.whiteUni))
+                            .foregroundStyle(.whiteUni)
                     }
                     .padding(.horizontal, 47.5)
                     .padding(.vertical, 20)
-                    .background(Color(.blue))
+                    .background(.blue)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
             }

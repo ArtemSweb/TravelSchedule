@@ -7,7 +7,7 @@
 
 import Foundation
 
-@Observable class ReelsViewModel: ObservableObject {
+@Observable final class ReelsViewModel: ObservableObject {
     var reels: [ReelsModel]
     
     init() {

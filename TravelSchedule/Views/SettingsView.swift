@@ -13,18 +13,57 @@ struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @Environment(\.colorScheme) private var systemColorScheme
     
+    //Для проверки экранов ошибок
+    var isServerError = false
+    var isInternetError = false
+    
     var body: some View {
+        if isServerError {
+            ServerErrorView()
+        } else if isInternetError {
+            InternetErrorView()
+        } else {
+            
         VStack {
             Toggle(isOn: $isDarkMode) {
                 Text("Темная тема")
                     .font(.system(size: 17, weight: .regular))
-                    .foregroundStyle(Color(.black))
+                    .foregroundStyle(.blackApp)
             }
-            .onAppear() {
-                isDarkMode = (systemColorScheme == .dark)
+            .onAppear {
+                isDarkMode = systemColorScheme == .dark
             }
-            .tint(Color(.blueUni))
+            .tint(.blueUni)
             .padding(.vertical, 19)
+            
+            HStack {
+                NavigationLink(destination: ServerErrorView()) {
+                    Text("Экран ошибки сервера")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(.blackApp)
+                    
+                    Spacer()
+                    
+                    Image(.chevronRight)
+                        .renderingMode(.template)
+                        .foregroundStyle(.blackApp)
+                }
+                .padding(.vertical, 19)
+            }
+            HStack {
+                NavigationLink(destination: InternetErrorView()) {
+                    Text("Экран ошибки интернета")
+                        .font(.system(size: 17, weight: .regular))
+                        .foregroundStyle(.blackApp)
+                    
+                    Spacer()
+                    
+                    Image(.chevronRight)
+                        .renderingMode(.template)
+                        .foregroundStyle(.blackApp)
+                }
+                .padding(.vertical, 19)
+            }
             
             Spacer()
             
@@ -38,7 +77,7 @@ struct SettingsView: View {
                     .lineSpacing(16)
                     .tracking(0.4)
                     .font(.system(size: 12, weight: .regular))
-                    .foregroundStyle(Color(.black))
+                    .foregroundStyle(.blackApp)
 
             }
                 
@@ -48,6 +87,7 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 24)
+    }
     }
 }
 

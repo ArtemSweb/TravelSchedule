@@ -24,13 +24,13 @@ struct CarrierInfoView: View {
                 Button(action: { dismiss() }) {
                     Image(.chevronLeft)
                         .renderingMode(.template)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.blackApp)
                 }
             }
             ToolbarItem(placement: .principal) {
                 Text("Информация о перевозчике")
                     .font(.system(size: 17, weight: .bold))
-                    .foregroundStyle(.white)
+                    .foregroundStyle(.blackApp)
             }
         }
     }

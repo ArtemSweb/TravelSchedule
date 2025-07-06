@@ -1,5 +1,5 @@
 //
-//  InternetError.swift
+//  InternetErrorView.swift
 //  TravelSchedule
 //
 //  Created by Артем Солодовников on 06.07.2025.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct InternetError: View {
+struct InternetErrorView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
             Image("internet_error")
@@ -17,10 +17,11 @@ struct InternetError: View {
             
             Text("Нет интернета")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(.black)
-        }    }
+                .foregroundStyle(.blackApp)
+        }
+    }
 }
 
 #Preview {
-    InternetError()
+    InternetErrorView()
 }

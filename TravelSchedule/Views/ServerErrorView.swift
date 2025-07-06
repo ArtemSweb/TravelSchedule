@@ -17,9 +17,8 @@ struct ServerErrorView: View {
             
             Text("Ошибка сервера")
                 .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(.black)
+                .foregroundStyle(.blackApp)
         }
-        
     }
 }
 
