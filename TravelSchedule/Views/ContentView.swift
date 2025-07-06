@@ -10,27 +10,46 @@ import OpenAPIURLSession
 import OpenAPIRuntime
 
 struct ContentView: View {
-    
-    var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+    @StateObject private var coordinator = NavCoordinator()
+        
+        var body: some View {
+            NavigationStack(path: $coordinator.path) {
+                TabView {
+                    MainView(coordinator: coordinator)
+                        .tabItem {
+                            Image(.scheduleTab)
+                                .renderingMode(.template)
+                        }
+                    
+                    SettingsView()
+                        .tabItem {
+                            Image(.settingsTab)
+                                .renderingMode(.template)
+                        }
+                }
+                .tint(Color(.black))
+                .navigationDestination(for: RouteEnum.self) { route in
+                    switch route {
+                    case .cityPicker(let fromField):
+                        ChangeCityView(coordinator: coordinator, fromField: fromField)
+                    case .stationPicker(let city, let fromField):
+                        ChangeStationView(coordinator: coordinator, city: city, fromField: fromField)
+                    case .tickets:
+                        TicketListView(coordinator: coordinator)
+                    case .filters:
+                        FiltersView(coordinator: coordinator)
+                    case .carrierInfo(let ticket):
+                        CarrierInfoView(carrier: ticket)
+                    }
+                }
+            }
+            .onChange(of: coordinator.path) {
+                if coordinator.path.isEmpty {
+                    coordinator.timeFilters.removeAll()
+                    coordinator.showTransfers = nil
+                }
+            }
         }
-        .padding()
-        .onAppear {
-            // Вызываем нашу тестовую функцию при появлении View
-//            testFetchStations()
-            testGetScheduleBetweenStation()
-//            testGetSchedule()
-//            testScheduleThread()
-//            testNearestStations()
-//            testCarrier()
-//            testStationsList()
-//            testCopyright()
-        }
-    }
 }
 
 #Preview {
