@@ -78,7 +78,6 @@ struct SettingsView: View {
                     .tracking(0.4)
                     .font(.system(size: 12, weight: .regular))
                     .foregroundStyle(.blackApp)
-
             }
                 
             Divider()

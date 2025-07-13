@@ -13,7 +13,7 @@ struct TicketListView: View {
     @Environment(\.dismiss) var dismiss
     
     let tickets: [TicketModel] = [
-        .init(operatorName: "РЖД", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
+        .init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
         .init(operatorName: "ФГК", date: "15 января", departure: "01:15", arrival: "09:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_FGK", note: nil),
         .init(operatorName: "Урал логистика", date: "16 января", departure: "12:30", arrival: "21:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_URAL", note: nil),
         .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
