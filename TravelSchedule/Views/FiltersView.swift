@@ -14,12 +14,12 @@ struct FiltersView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Время отправления")
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
             ForEach(PeriodicEnum.allCases, id: \.self) { period in
                 HStack {
                     Text(period.rawValue)
-                        .font(.system(size: 17, weight: .regular))
+                        .font(.regular17)
                         .foregroundStyle(.blackApp)
                     Spacer()
                     Button(action: {
@@ -40,11 +40,11 @@ struct FiltersView: View {
             }
             
             Text("Показывать варианты с пересадками")
-                .font(.system(size: 20, weight: .bold))
+                .font(.bold24)
                 .padding(.top, 16)
             HStack {
                 Text("Да")
-                    .font(.system(size: 17, weight: .regular))
+                    .font(.regular17)
                     .foregroundStyle(.blackApp)
                 Spacer()
                 Button(action: { coordinator.showTransfers = true }) {
@@ -59,7 +59,7 @@ struct FiltersView: View {
             }
             HStack {
                 Text("Нет")
-                    .font(.system(size: 17, weight: .regular))
+                    .font(.regular17)
                     .foregroundStyle(.blackApp)
                 Spacer()
                 Button(action: { coordinator.showTransfers = false }) {
@@ -76,7 +76,7 @@ struct FiltersView: View {
             if coordinator.isFiltersValid {
                 Button(action: {coordinator.path.removeLast()}) {
                     Text("Применить")
-                        .font(.system(size: 17, weight: .bold))
+                        .font(.bold17)
                         .foregroundStyle(.whiteUni)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 20)

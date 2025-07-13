@@ -16,7 +16,7 @@ struct InternetErrorView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 70))
             
             Text("Нет интернета")
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
         }
     }

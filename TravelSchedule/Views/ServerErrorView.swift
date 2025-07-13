@@ -16,7 +16,7 @@ struct ServerErrorView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 70))
             
             Text("Ошибка сервера")
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
         }
     }

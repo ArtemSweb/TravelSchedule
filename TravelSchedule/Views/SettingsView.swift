@@ -39,7 +39,7 @@ struct SettingsView: View {
             HStack {
                 NavigationLink(destination: ServerErrorView()) {
                     Text("Экран ошибки сервера")
-                        .font(.system(size: 17, weight: .regular))
+                        .font(.regular17)
                         .foregroundStyle(.blackApp)
                     
                     Spacer()
@@ -53,7 +53,7 @@ struct SettingsView: View {
             HStack {
                 NavigationLink(destination: InternetErrorView()) {
                     Text("Экран ошибки интернета")
-                        .font(.system(size: 17, weight: .regular))
+                        .font(.regular17)
                         .foregroundStyle(.blackApp)
                     
                     Spacer()

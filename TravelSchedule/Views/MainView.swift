@@ -92,7 +92,7 @@ struct MainView: View {
                         coordinator.path.append(RouteEnum.tickets)
                     }) {
                         Text("Найти")
-                            .font(.system(size: 17, weight: .bold))
+                            .font(.bold17)
                             .foregroundStyle(.whiteUni)
                     }
                     .padding(.horizontal, 47.5)

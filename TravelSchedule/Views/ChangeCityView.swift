@@ -47,7 +47,7 @@ struct ChangeCityView: View {
                             }) {
                                 HStack {
                                     Text("\(item)")
-                                        .font(.system(size: 17, weight: .regular))
+                                        .font(.regular17)
                                         .foregroundStyle(.blackApp)
                                     
                                     Spacer()
@@ -64,7 +64,7 @@ struct ChangeCityView: View {
                     } else {
                         VStack {
                             Text("Город не найден")
-                                .font(.system(size: 24, weight: .bold))
+                                .font(.bold24)
                                 .foregroundStyle(.blackApp)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
@@ -88,7 +88,7 @@ struct ChangeCityView: View {
             
             ToolbarItem(placement: .principal) {
                 Text("Выбор города")
-                    .font(.system(size: 17, weight: .bold))
+                    .font(.bold17)
                     .foregroundStyle(.blackApp)
             }
         }

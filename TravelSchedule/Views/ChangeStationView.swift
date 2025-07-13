@@ -41,7 +41,7 @@ struct ChangeStationView: View {
                     if filteredItems.isEmpty {
                         VStack {
                             Text("Станция не найдена")
-                                .font(.system(size: 24, weight: .bold))
+                                .font(.bold24)
                                 .foregroundStyle(.blackApp)
                                 .multilineTextAlignment(.center)
                                 .frame(maxWidth: .infinity)
@@ -61,7 +61,7 @@ struct ChangeStationView: View {
                             }) {
                                 HStack {
                                     Text("\(item)")
-                                        .font(.system(size: 17, weight: .regular))
+                                        .font(.regular17)
                                         .foregroundStyle(.blackApp)
                                     
                                     Spacer()

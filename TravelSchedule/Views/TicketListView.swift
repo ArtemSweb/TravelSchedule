@@ -71,7 +71,7 @@ private struct RouteHeaderView: View {
     var body: some View {
         HStack {
             Text(title)
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
                 .multilineTextAlignment(.leading)
             Spacer()
@@ -104,7 +104,7 @@ private struct EmptyTicketsView: View {
     var body: some View {
         VStack {
             Text("Вариантов нет")
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
@@ -133,7 +133,7 @@ private struct FilterButton: View {
         }) {
             HStack(spacing: 4) {
                 Text("Уточнить время")
-                    .font(.system(size: 17, weight: .bold))
+                    .font(.bold17)
                     .foregroundStyle(.whiteUni)
                 
                 if coordinator.isFiltersValid {

@@ -29,7 +29,7 @@ struct CarrierInfoView: View {
             }
             ToolbarItem(placement: .principal) {
                 Text("Информация о перевозчике")
-                    .font(.system(size: 17, weight: .bold))
+                    .font(.bold17)
                     .foregroundStyle(.blackApp)
             }
         }
