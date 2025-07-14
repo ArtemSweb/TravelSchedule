@@ -37,10 +37,10 @@ struct SettingsView: View {
             .padding(.vertical, 19)
             
             HStack {
-                NavigationLink(destination: ServerErrorView()) {
-                    Text("Экран ошибки сервера")
+                NavigationLink(destination: UserAgreementView()) {
+                    Text("Пользовательское соглашение")
                         .font(.regular17)
-                        .foregroundStyle(.blackApp)
+                        .foregroundColor(.blackApp)
                     
                     Spacer()
                     
@@ -48,21 +48,6 @@ struct SettingsView: View {
                         .renderingMode(.template)
                         .foregroundStyle(.blackApp)
                 }
-                .padding(.vertical, 19)
-            }
-            HStack {
-                NavigationLink(destination: InternetErrorView()) {
-                    Text("Экран ошибки интернета")
-                        .font(.regular17)
-                        .foregroundStyle(.blackApp)
-                    
-                    Spacer()
-                    
-                    Image(.chevronRight)
-                        .renderingMode(.template)
-                        .foregroundStyle(.blackApp)
-                }
-                .padding(.vertical, 19)
             }
             
             Spacer()
