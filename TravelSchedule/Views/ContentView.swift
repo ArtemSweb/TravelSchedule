@@ -12,7 +12,11 @@ import OpenAPIRuntime
 struct ContentView: View {
     @StateObject private var coordinator = NavCoordinator()
         
-        var body: some View {
+    var body: some View {
+        ZStack{
+            Color.whiteApp
+                .ignoresSafeArea()
+            
             NavigationStack(path: $coordinator.path) {
                 TabView {
                     MainView(coordinator: coordinator)
@@ -50,6 +54,7 @@ struct ContentView: View {
                 }
             }
         }
+    }
 }
 
 #Preview {

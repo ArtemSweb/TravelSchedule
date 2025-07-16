@@ -35,6 +35,7 @@ struct StoryCell: View {
                     .font(.regular12)
                     .foregroundColor(.whiteUni)
                     .lineLimit(3)
+                    .multilineTextAlignment(.leading)
                     .padding(.init(top: 0, leading: 8, bottom: 12, trailing: 8))
             }
         }

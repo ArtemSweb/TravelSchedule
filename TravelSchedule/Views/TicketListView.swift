@@ -43,21 +43,25 @@ struct TicketListView: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
-            RouteHeaderView(title: routeTitle)
-            
-            ZStack(alignment: .bottom) {
-                TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
+        ZStack {
+            Color.whiteApp
+                .ignoresSafeArea()
+            VStack(spacing: 16) {
+                RouteHeaderView(title: routeTitle)
                 
-                FilterButton(coordinator: coordinator)
-                    .padding(.bottom, 24)
+                ZStack(alignment: .bottom) {
+                    TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
+                    
+                    FilterButton(coordinator: coordinator)
+                        .padding(.bottom, 24)
+                }
             }
-        }
-        .padding(.horizontal, 16)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                BackButton(action: { dismiss() })
+            .padding(.horizontal, 16)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    BackButton(action: { dismiss() })
+                }
             }
         }
     }

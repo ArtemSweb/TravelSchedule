@@ -128,7 +128,7 @@ struct MainView: View {
                         }
                         .padding(.horizontal, 47.5)
                         .padding(.vertical, 20)
-                        .background(.blue)
+                        .background(.blueUni)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                     }
                 }

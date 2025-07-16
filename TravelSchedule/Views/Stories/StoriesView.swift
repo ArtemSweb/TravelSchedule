@@ -75,6 +75,8 @@ struct StoriesView: View {
                 .padding(.top,57)
                 .padding(.trailing, 12)
         }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarHidden(true)
         .onAppear {
             localViewedStories.insert(selection)
             timer = Self.createTimer(configuration: configuration)
@@ -92,9 +94,11 @@ struct StoriesView: View {
     private func timerTick() {
         var nextProgress = progress + configuration.progressPerTick
         if nextProgress >= 1 {
-            nextProgress = 0
+            goToNextStoryOrDismiss()
         }
-        progress = nextProgress
+        withAnimation {
+            progress = nextProgress
+        }
     }
     
     private func goToNextStoryOrDismiss() {

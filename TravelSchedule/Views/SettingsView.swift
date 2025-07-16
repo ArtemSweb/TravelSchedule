@@ -13,17 +13,12 @@ struct SettingsView: View {
     @AppStorage("isDarkMode") private var isDarkMode = false
     @Environment(\.colorScheme) private var systemColorScheme
     
-    //Для проверки экранов ошибок
-    var isServerError = false
-    var isInternetError = false
-    
     var body: some View {
-        if isServerError {
-            ServerErrorView()
-        } else if isInternetError {
-            InternetErrorView()
-        } else {
-            
+        
+        ZStack {
+            Color.whiteApp
+                .ignoresSafeArea()
+
             VStack {
                 Toggle(isOn: $isDarkMode) {
                     Text("Темная тема")
@@ -53,18 +48,18 @@ struct SettingsView: View {
                 .padding(.horizontal, 16)
                 
                 Spacer()
-            
+                
                 VStack(alignment: .center, spacing: 16) {
                     Group {
                         Text("Приложение использует API «Яндекс.Расписания»")
                         
                         Text("Версия 1.0 (beta)")
                     }
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(16)
-                        .tracking(0.4)
-                        .font(.system(size: 12, weight: .regular))
-                        .foregroundStyle(.blackApp)
+                    .multilineTextAlignment(.center)
+                    .lineSpacing(16)
+                    .tracking(0.4)
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundStyle(.blackApp)
                 }
                 .padding(.bottom, 24)
                 
