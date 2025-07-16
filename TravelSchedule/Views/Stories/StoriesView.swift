@@ -121,10 +121,3 @@ struct StoriesView: View {
         Timer.publish(every: configuration.timerTickInternal, on: .main, in: .common)
     }
 }
-
-//#Preview {
-//    StoriesView(onViewed: , stories: [
-//        Story(title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text", description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text", imagePrev: "", imageName: "1"),
-//        Story(title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text", description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text", imagePrev: "", imageName: "2"),
-//        Story(title: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text", description: "Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text Text", imagePrev: "", imageName: "3")])
-//}

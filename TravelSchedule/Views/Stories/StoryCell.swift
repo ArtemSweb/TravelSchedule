@@ -1,5 +1,5 @@
 //
-//  ReelsCell.swift
+//  StoryCell.swift
 //  TravelSchedule
 //
 //  Created by Артем Солодовников on 01.07.2025.
