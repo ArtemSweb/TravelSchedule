@@ -13,7 +13,7 @@ struct TicketListView: View {
     @Environment(\.dismiss) var dismiss
     
     let tickets: [TicketModel] = [
-        .init(operatorName: "РЖД", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
+        .init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
         .init(operatorName: "ФГК", date: "15 января", departure: "01:15", arrival: "09:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_FGK", note: nil),
         .init(operatorName: "Урал логистика", date: "16 января", departure: "12:30", arrival: "21:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_URAL", note: nil),
         .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
@@ -43,21 +43,25 @@ struct TicketListView: View {
     }
     
     var body: some View {
-        VStack(spacing: 16) {
-            RouteHeaderView(title: routeTitle)
-            
-            ZStack(alignment: .bottom) {
-                TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
+        ZStack {
+            Color.whiteApp
+                .ignoresSafeArea()
+            VStack(spacing: 16) {
+                RouteHeaderView(title: routeTitle)
                 
-                FilterButton(coordinator: coordinator)
-                    .padding(.bottom, 24)
+                ZStack(alignment: .bottom) {
+                    TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
+                    
+                    FilterButton(coordinator: coordinator)
+                        .padding(.bottom, 24)
+                }
             }
-        }
-        .padding(.horizontal, 16)
-        .navigationBarBackButtonHidden(true)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                BackButton(action: { dismiss() })
+            .padding(.horizontal, 16)
+            .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    BackButton(action: { dismiss() })
+                }
             }
         }
     }
@@ -71,7 +75,7 @@ private struct RouteHeaderView: View {
     var body: some View {
         HStack {
             Text(title)
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
                 .multilineTextAlignment(.leading)
             Spacer()
@@ -104,7 +108,7 @@ private struct EmptyTicketsView: View {
     var body: some View {
         VStack {
             Text("Вариантов нет")
-                .font(.system(size: 24, weight: .bold))
+                .font(.bold24)
                 .foregroundStyle(.blackApp)
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
@@ -133,7 +137,7 @@ private struct FilterButton: View {
         }) {
             HStack(spacing: 4) {
                 Text("Уточнить время")
-                    .font(.system(size: 17, weight: .bold))
+                    .font(.bold17)
                     .foregroundStyle(.whiteUni)
                 
                 if coordinator.isFiltersValid {
