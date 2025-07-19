@@ -13,33 +13,21 @@ struct MainView: View {
     @State private var showAgreement = false
     @ObservedObject var coordinator: NavCoordinator
     
-    @State private var showStories = false
-    @State private var selectedStoryIndex = 0
-    @State private var viewedStories: Set<Int> = []
-    @State private var pendingStoryIndex: Int?
-    
     var body: some View {
         ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             
-            VStack (spacing: 44){
+            VStack(spacing: 44) {
                 ScrollView (.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 12) {
-                        ForEach(viewModel.stories.indices.sorted { lhs, rhs in
-                            let isViewedL = viewedStories.contains(lhs)
-                            let isViewedR = viewedStories.contains(rhs)
-                            if isViewedL == isViewedR { return lhs < rhs }
-                            return !isViewedL && isViewedR
-                        }, id: \.self) { index in
+                        ForEach(viewModel.sortedIndices(), id: \.self) { index in
                             Button {
-                                selectedStoryIndex = index
-                                showStories = true
-                                viewedStories.insert(index)
+                                viewModel.openStory(at: index)
                             } label: {
                                 StoryCell(
                                     story: viewModel.stories[index],
-                                    isViewed: viewedStories.contains(index)
+                                    isViewed: viewModel.viewedStories.contains(index)
                                 )
                             }
                         }
@@ -47,12 +35,12 @@ struct MainView: View {
                 }
                 .padding(.horizontal, 16)
                 .frame(height: 140)
-                .fullScreenCover(isPresented: $showStories) {
+                .fullScreenCover(isPresented: $viewModel.showStories) {
                      StoriesView(
                          onViewed: { indices in
-                             viewedStories.formUnion(indices)
+                             viewModel.markViewed(Array(indices))
                          }, stories: viewModel.stories,
-                         initialIndex: selectedStoryIndex
+                         initialIndex: viewModel.selectedStoryIndex
                      )
                      .preferredColorScheme(.dark)
                  }

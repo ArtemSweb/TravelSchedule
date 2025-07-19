@@ -12,7 +12,7 @@ struct FiltersView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        ZStack{
+        ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             
@@ -26,13 +26,13 @@ struct FiltersView: View {
                             .font(.regular17)
                             .foregroundStyle(.blackApp)
                         Spacer()
-                        Button(action: {
+                        Button {
                             if coordinator.timeFilters.contains(period) {
                                 coordinator.timeFilters.remove(period)
                             } else {
                                 coordinator.timeFilters.insert(period)
                             }
-                        }) {
+                        } label: {
                             Image(systemName: coordinator.timeFilters.contains(period) ? "checkmark.square.fill" : "square")
                                 .resizable()
                                 .frame(width: 24, height: 24)

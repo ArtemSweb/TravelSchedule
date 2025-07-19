@@ -30,7 +30,6 @@ struct ProgressBar: View {
         }
     }
     
-    
     private func fillFor(index: Int) -> CGFloat {
         if progress >= CGFloat(index + 1) { return 1 }
         else if progress > CGFloat(index) { return progress - CGFloat(index) }

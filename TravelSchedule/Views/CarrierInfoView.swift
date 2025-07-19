@@ -14,7 +14,7 @@ struct CarrierInfoView: View {
     let carrier: TicketModel
     
     var body: some View {
-        ZStack{
+        ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             

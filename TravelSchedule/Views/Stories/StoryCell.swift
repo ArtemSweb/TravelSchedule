@@ -10,11 +10,12 @@ import SwiftUI
 struct StoryCell: View {
     var story: Story
     let isViewed: Bool
+    
+    private let storyHeight: Double = 140
+    private let storyWidth: Double = 92
 
     
     var body: some View {
-        let storyHeight: Double = 140
-        let storyWidth: Double = 92
 
         ZStack {
             Image(story.imagePrev)

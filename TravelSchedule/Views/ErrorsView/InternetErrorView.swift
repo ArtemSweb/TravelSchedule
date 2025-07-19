@@ -9,7 +9,7 @@ import SwiftUI
 
 struct InternetErrorView: View {
     var body: some View {
-        ZStack{
+        ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             
@@ -24,7 +24,6 @@ struct InternetErrorView: View {
                     .foregroundStyle(.blackApp)
             }
         }
-        
     }
 }
 

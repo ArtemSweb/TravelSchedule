@@ -13,7 +13,7 @@ struct ContentView: View {
     @StateObject private var coordinator = NavCoordinator()
         
     var body: some View {
-        ZStack{
+        ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             

@@ -19,9 +19,16 @@ struct CarrierLinkView: View {
                 .font(.regular17)
                 .foregroundColor(.blackApp)
             
-            Link(linkText, destination: URL(string: linkText)!)
-                .font(.regular12)
-                .foregroundColor(.blueUni)
+            if let url = URL(string: linkText) {
+                Link(linkText, destination: url)
+                    .font(.regular12)
+                    .foregroundColor(.blueUni)
+            } else {
+                Text(linkText)
+                    .font(.regular12)
+                    .foregroundColor(.blueUni)
+            }
+            
         }
     }
 }

@@ -18,6 +18,6 @@ struct CloseButton: View {
     }
 }
 
-//#Preview {
-//    CloseButton()
-//}
+#Preview {
+    CloseButton(action: {} )
+}

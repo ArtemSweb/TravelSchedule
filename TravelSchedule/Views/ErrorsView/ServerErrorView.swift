@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ServerErrorView: View {
     var body: some View {
-        ZStack{
+        ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             
