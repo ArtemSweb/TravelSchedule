@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SettingsView: View {
     
-    @AppStorage("isDarkMode") private var isDarkMode = false
+    @Bindable private var viewModel = SettingsViewModel.shared
     @Environment(\.colorScheme) private var systemColorScheme
     
     var body: some View {
@@ -20,13 +20,16 @@ struct SettingsView: View {
                 .ignoresSafeArea()
 
             VStack {
-                Toggle(isOn: $isDarkMode) {
+                Toggle(isOn: $viewModel.isDarkMode) {
                     Text("Темная тема")
                         .font(.system(size: 17, weight: .regular))
                         .foregroundStyle(.blackApp)
                 }
                 .onAppear {
-                    isDarkMode = systemColorScheme == .dark
+                    viewModel.updateWithSystemTheme(systemColorScheme == .dark)
+                }
+                .onChange(of: systemColorScheme) { _, newColorScheme in
+                    viewModel.updateWithSystemTheme(systemColorScheme == .dark)
                 }
                 .tint(.blueUni)
                 .padding(.vertical, 19)

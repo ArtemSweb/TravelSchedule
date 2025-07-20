@@ -9,12 +9,16 @@ import SwiftUI
 
 @main
 struct TravelScheduleApp: App {
-    @AppStorage("isDarkMode") private var isDarkMode = true
+    @State private var viewModel = SettingsViewModel.shared
     
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .preferredColorScheme(isDarkMode ? .dark : .light)
+                .preferredColorScheme(viewModel.isDarkMode ? .dark : .light)
+                .onAppear {
+                    let systemIsDark = UITraitCollection.current.userInterfaceStyle == .dark
+                    viewModel.updateWithSystemTheme(systemIsDark)
+                }
         }
     }
 }
