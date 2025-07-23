@@ -604,14 +604,14 @@ components:
                               type: number
                         name:
                           type: string
-                  duration:
-                    type: number
-                  arrival_terminal:
-                    type: string
-                  start_date:
-                    type: string
-                  arrival_platform:
-                    type: string
+              duration:
+                type: number
+              arrival_terminal:
+                type: string
+              start_date:
+                type: string
+              arrival_platform:
+                type: string
         segments:
           type: array
           items:

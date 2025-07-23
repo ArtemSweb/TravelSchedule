@@ -1,5 +1,5 @@
 //
-//  ChangeCityView.swift
+//  CitiesListView.swift
 //  TravelSchedule
 //
 //  Created by Артем Солодовников on 01.07.2025.
@@ -7,14 +7,16 @@
 
 import SwiftUI
 
-// MARK: - ChangeCityView
+// MARK: - CitiesListView
 
-struct ChangeCityView: View {
+struct CitiesListView: View {
     
     // MARK: - Properties
     @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
     @ObservedObject var coordinator: NavCoordinator
+    @StateObject var viewModel = CitiesListViewModel()
+    
     let fromField: Bool
     
     // MARK: - Private properties
@@ -125,7 +127,7 @@ struct ChangeCityView: View {
 // MARK: - ChangeCityView_Preview
 
 #Preview {
-    ChangeCityView(
+    CitiesListView(
         coordinator: NavCoordinator(),
         fromField: true
     )

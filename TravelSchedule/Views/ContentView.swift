@@ -35,7 +35,7 @@ struct ContentView: View {
                 .navigationDestination(for: RouteEnum.self) { route in
                     switch route {
                     case .cityPicker(let fromField):
-                        ChangeCityView(coordinator: coordinator, fromField: fromField)
+                        CitiesListView(coordinator: coordinator, fromField: fromField)
                     case .stationPicker(let city, let fromField):
                         ChangeStationView(coordinator: coordinator, city: city, fromField: fromField)
                     case .tickets:

@@ -10,6 +10,7 @@ import SwiftUI
 final class SettingsViewModel {
     
     static let shared = SettingsViewModel()
+    
     var isDarkMode: Bool {
             didSet {
                 UserDefaults.standard.set(isDarkMode, forKey: "isDarkMode")
