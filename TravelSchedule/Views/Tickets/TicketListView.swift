@@ -11,6 +11,8 @@ import SwiftUI
 struct TicketListView: View {
     @ObservedObject var coordinator: NavCoordinator
     @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel: TicketListViewModel
+    @State private var fetchTask: Task<Void, Never>?
     
     let tickets: [TicketModel] = [
         .init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
@@ -38,22 +40,48 @@ struct TicketListView: View {
         }
     }
     
-    private var routeTitle: String {
-        "\(coordinator.selectedCityFrom) (\(coordinator.selectedStationFrom)) → \(coordinator.selectedCityTo) (\(coordinator.selectedStationTo))"
-    }
+//    private var routeTitle: String {
+//        "\(coordinator.selectedCityFrom) (\(coordinator.selectedStationFrom)) → \(coordinator.selectedCityTo) (\(coordinator.selectedStationTo))"
+//    }
     
     var body: some View {
         ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
+            
             VStack(spacing: 16) {
-                RouteHeaderView(title: routeTitle)
+                RouteHeaderView(title: viewModel.title)
                 
-                ZStack(alignment: .bottom) {
-                    TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
+                if viewModel.isLoading {
+                    ProgressView()
+                } else if viewModel.loadingFailed {
+                    Text("Ошибка")
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 8) {
+                            
+                            if tickets.isEmpty {
+                                EmptyTicketsView()
+                            } else {
+                                ForEach(tickets) { ticket in
+                                    TicketButton(ticket: ticket, action: {
+                                        coordinator.path.append(RouteEnum.carrierInfo(ticket))
+                                    })
+                                }
+                            }
+                        }
+                    }
                     
                     FilterButton(coordinator: coordinator)
                         .padding(.bottom, 24)
+                    }
+                }
+                
+                ZStack(alignment: .bottom) {
+            }
+            .task {
+                fetchTask = Task {
+                    await viewModel.fetchRoutes()
                 }
             }
             .padding(.horizontal, 16)
