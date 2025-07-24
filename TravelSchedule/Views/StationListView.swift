@@ -1,38 +1,22 @@
 //
-//  ChangeStationView.swift
+//  StationListView.swift
 //  TravelSchedule
 //
 //  Created by Артем Солодовников on 01.07.2025.
 //
 
-
 import SwiftUI
 
-struct ChangeStationView: View {
+struct StationListView: View {
     // MARK: - Properties
     @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
     @ObservedObject var coordinator: NavCoordinator
+    @ObservedObject var viewModel: StationListViewModel
+    
     let city: String
     let fromField: Bool
     
-    // MARK: - Private properties
-    private let stations = [
-        "Киевский вокзал",
-        "Курский вокзал",
-        "Ярославский вокзал",
-        "Белорусский вокзал",
-        "Савеловский вокзал",
-        "Ленинградский вокзал"
-    ]
-    
-    private var filteredItems: [String] {
-        if searchText.isEmpty {
-            return stations
-        } else {
-            return stations.filter { $0.localizedCaseInsensitiveContains(searchText) }
-        }
-    }
     
     // MARK: - Content
     var body: some View {
@@ -48,7 +32,7 @@ struct ChangeStationView: View {
     // MARK: - Private view
     private var content: some View {
         VStack(spacing: 0) {
-            CustomSearchBar(text: $searchText, placeholder: "Введите запрос")
+            CustomSearchBar(text: $viewModel.searchText, placeholder: "Введите запрос")
             cityList
         }
         .padding(.horizontal, 16)
@@ -60,12 +44,12 @@ struct ChangeStationView: View {
     private var cityList: some View {
         ScrollView(.vertical) {
             LazyVStack(alignment: .leading) {
-                if !filteredItems.isEmpty {
-                    ForEach(filteredItems, id: \.self) { city in
-                        stationButton(for: city)
-                    }
-                } else {
+                if viewModel.filteredStations.isEmpty && viewModel.isSearching {
                     emptyState
+                } else {
+                    ForEach(viewModel.filteredStations) { station in
+                        stationButton(for: station.title)
+                    }
                 }
             }
         }
@@ -130,10 +114,10 @@ struct ChangeStationView: View {
 }
 
 
-#Preview {
-    ChangeStationView(
-        coordinator: NavCoordinator(),
-        city: "Москва",
-        fromField: true
-    )
-}
+//#Preview {
+//    StationListView(
+//        coordinator: NavCoordinator(),
+//        city: "Москва",
+//        fromField: true
+//    )
+//}

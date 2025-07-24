@@ -16,25 +16,23 @@ struct CitiesListView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var coordinator: NavCoordinator
     @StateObject var viewModel = CitiesListViewModel()
+    @State private var fetchTask: Task<Void, Never>?
     
     let fromField: Bool
-    
-    // MARK: - Private properties
-    private let cities = [
-        "Москва", "Санкт-Петербург", "Сочи",
-        "Горный воздух", "Краснодар", "Казань", "Омск"
-    ]
-
-    private var filteredItems: [String] {
-        guard !searchText.isEmpty else { return cities }
-        return cities.filter { $0.localizedCaseInsensitiveContains(searchText) }
-    }
     
     // MARK: - Content
     var body: some View {
         ZStack {
             Color.whiteApp.ignoresSafeArea()
-            content
+            if viewModel.isLoading {
+                ProgressView()
+            } else if viewModel.loadingFailed {
+                VStack {
+                    Text("Ошибка")
+                }
+            } else {
+                content
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -43,8 +41,13 @@ struct CitiesListView: View {
 
     private var content: some View {
         VStack(spacing: .zero) {
-            CustomSearchBar(text: $searchText, placeholder: "Введите запрос")
+            CustomSearchBar(text: $viewModel.searchText, placeholder: "Введите запрос")
             cityList
+        }
+        .task {
+            fetchTask = Task {
+                await viewModel.fetchSettlements()
+            }
         }
         .padding(.horizontal, 16)
         .scrollIndicators(.hidden)
@@ -55,30 +58,33 @@ struct CitiesListView: View {
     private var cityList: some View {
         ScrollView(.vertical) {
             LazyVStack(alignment: .leading) {
-                if !filteredItems.isEmpty {
-                    ForEach(filteredItems, id: \.self) { city in
-                        cityButton(for: city)
-                    }
-                } else {
+                if viewModel.filteredSettlements.isEmpty && viewModel.isSearching {
                     emptyState
+                } else {
+                    ForEach(viewModel.filteredSettlements) { settlement in
+                        cityButton(for: settlement)
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets())
+                    .background(.whiteApp)
                 }
             }
         }
     }
     
-    private func cityButton(for city: String) -> some View {
+    private func cityButton(for settlement: Settlement) -> some View {
         Button(action: {
             if fromField {
-                coordinator.selectedCityFrom = city
+                coordinator.selectedCityFrom = settlement.title
                 coordinator.selectedStationFrom = ""
             } else {
-                coordinator.selectedCityTo = city
+                coordinator.selectedCityTo = settlement.title
                 coordinator.selectedStationTo = ""
             }
-            coordinator.path.append(RouteEnum.stationPicker(city: city, fromField: fromField))
+            coordinator.path.append(RouteEnum.stationPicker(city: settlement, fromField: fromField))
         }) {
             HStack {
-                Text(city)
+                Text(settlement.title)
                     .font(.regular17)
                     .foregroundStyle(.blackApp)
 

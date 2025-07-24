@@ -6,178 +6,238 @@ info:
 servers:
 - url: https://api.rasp.yandex.net
 tags:
-- name: Список ближайших станций
-  description: Список ближайших станций
+- name: Search
+  description: Schedule between two given stations.
+- name: Schedule
+  description: Schedule for a given station.
+- name: Thread
+  description: List of stations along the specified route.
+- name: Stations
+  description: List of nearest stations.
+- name: Settlement
+  description: Information about the city nearest to the specified point.
+- name: Carrier
+  description: Retrieves carrier details based on the carrier code.
+- name: StationsList
+  description: Full list of stations, information about which is provided by Yandex Schedules.
+- name: Copyright
+  description: Metadata about Yandex Schedule service.
 paths:
   /v3.0/search/:
     get:
       tags:
-      - getSearch
-      summary: Расписание рейсов между станциями
-      operationId: getSearch
+      - Search
+      summary: Schedule between two given stations
+      operationId: getScheduleBetweenStations
       parameters:
       - name: apikey
         in: query
-        description: API key
         required: false
+        description: Access key to the API. Can also be provided in the Authorization header.
         schema:
           type: string
       - name: from
         in: query
-        description: Код станции отправления
         required: true
+        description: Departure station code, in the specified encoding system.
         schema:
           type: string
       - name: to
         in: query
-        description: Код станции прибытия
         required: true
+        description: Arrival station code, in the specified encoding system.
         schema:
           type: string
       - name: format
         in: query
-        description: json или xml
         required: false
+        description: Response format. Supported values are 'json' (default) and 'xml'.
         schema:
           type: string
+          enum:
+            - json
+            - xml
       - name: lang
         in: query
-        description: Язык возвращаемой информации
         required: false
+        description: Language for the returned information in the format <language_code>_<country_code>.
         schema:
           type: string
       - name: date
         in: query
-        description: Дата, на которую необходимо получить список рейсов
         required: false
+        description: Date in ISO 8601 format (YYYY-MM-DD) for the travel search.
         schema:
           type: string
       - name: transport_types
         in: query
-        description: Тип транспортного средства
         required: false
+        description: Type of transport. Possible values - 'plane', 'train', 'suburban', 'bus', 'water', 'helicopter'.
         schema:
           type: string
+          enum:
+            - plane
+            - train
+            - suburban
+            - bus
+            - water
+            - helicopter
       - name: system
         in: query
-        description: Система кодирования, в которой указывается код станции отправления и код станции прибытия
         required: false
+        description: Encoding system for station codes. Supported values - 'yandex', 'iata', 'sirena', 'express', 'esr'.
         schema:
           type: string
+          enum:
+            - yandex
+            - iata
+            - sirena
+            - express
+            - esr
       - name: show_systems
         in: query
-        description: Системы кодирования
         required: false
+        description: Encoding systems to include in the response for station codes.
         schema:
           type: string
+          enum:
+            - yandex
+            - esr
       - name: offset
         in: query
-        description: Смещение относительно первого результата поиска
         required: false
+        description: Offset relative to the first result in the response.
         schema:
           type: integer
+          default: 0
       - name: limit
         in: query
-        description: Максимальное количество результатов поиска в ответе
         required: false
+        description: Limit the number of results returned.
         schema:
           type: integer
+          default: 100
       - name: add_days_mask
         in: query
-        description: Признак, который указывает, что для каждой нитки в ответе следует вернуть календарь хождения
         required: false
+        description: If true, return a schedule calendar for each route.
         schema:
           type: boolean
+          default: false
       - name: result_timezone
         in: query
-        description: Часовой пояс, для которого следует указывать даты и времена в ответе
         required: false
+        description: Timezone for dates and times in the response, using TZ database identifiers.
         schema:
           type: string
       - name: transfers
         in: query
-        description: Признак, разрешающий добавить к результатам поиска маршруты с пересадками
         required: false
+        description: If true, include routes with transfers in the search results.
         schema:
           type: boolean
+          default: false
       responses:
         "200":
           description: success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SearchSchema'
+                $ref: '#/components/schemas/ScheduleBetweenStations'
   /v3.0/schedule/:
     get:
       tags:
-      - getSchedule
-      summary: Расписание рейсов по станции
-      operationId: getSchedule
+      - Schedule
+      summary: Retrieve schedule for a station
+      operationId: getScheduleForStation
       parameters:
       - name: apikey
         in: query
-        description: API key
         required: false
+        description: API access key. Can also be passed in the Authorization header.
         schema:
           type: string
       - name: station
         in: query
-        description: Код станции
         required: true
+        description: Station code in the specified coding system.
         schema:
           type: string
       - name: lang
         in: query
-        description: Язык возвращаемой информации
         required: false
+        description: Language in `<lang>_<country>` format (e.g., `ru_RU`).
         schema:
           type: string
       - name: format
         in: query
-        description: Формат ответа json или xml
         required: false
+        description: Response format (`json` or `xml`). Default - `json`.
         schema:
           type: string
+          enum:
+            - json
+            - xml
       - name: date
         in: query
-        description: Дата, на которую необходимо получить список рейсов
         required: false
+        description: Date in `YYYY-MM-DD`. Default - all future trips.
         schema:
           type: string
       - name: transport_types
         in: query
-        description: Тип транспортного средства
         required: false
+        description: Transport type (`plane`, `train`, etc.). Default - all types.
         schema:
           type: string
+          enum:
+            - plane
+            - train
+            - suburban
+            - bus
+            - water
+            - helicopter
       - name: direction
         in: query
-        description: Код направления
         required: false
+        description: Direction for suburban schedules (e.g., `arrival`, `all`).
         schema:
           type: string
       - name: event
         in: query
-        description: Событие
         required: false
+        description: Filter by event (`departure` or `arrival`). Default - `departure`.
         schema:
           type: string
+          enum:
+            - departure
+            - arrival
       - name: system
         in: query
-        description: system
         required: false
+        description: Coding system (yandex, iata, etc.). Default - yandex.
         schema:
           type: string
+          enum:
+            - yandex
+            - iata
+            - sirena
+            - express
+            - esr
       - name: show_systems
         in: query
-        description: Системы кодирования
         required: false
+        description: Coding systems to include in response.
         schema:
           type: string
+          enum:
+            - yandex
+            - esr
+            - all
       - name: result_timezone
         in: query
-        description: Часовой пояс
         required: false
+        description: Time zone for dates/times (e.g., `Europe/Moscow`). Default - station time zone.
         schema:
           type: string
       responses:
@@ -186,60 +246,60 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ScheduleSchema'
+                $ref: '#/components/schemas/ScheduleForStation'
   /v3.0/thread/:
     get:
       tags:
-      - getThread
-      summary: Список станций следования
+      - Thread
+      summary: Get schedule information for a thread
       operationId: getThread
       parameters:
       - name: apikey
         in: query
-        description: API key
         required: false
+        description: API access key. Can be passed as a query parameter or in the Authorization header.
         schema:
           type: string
       - name: uid
         in: query
-        description: Идентификатор нитки
         required: true
+        description: Thread identifier in Yandex Schedule. Must be up-to-date.
         schema:
           type: string
       - name: from
         in: query
-        description: Код станции отправления
         required: false
+        description: Departure station code (or city code) in the Yandex coding system.
         schema:
           type: string
       - name: to
         in: query
-        description: Код станции прибытия
         required: false
+        description: Arrival station code (or city code) in the Yandex coding system.
         schema:
           type: string
       - name: format
         in: query
-        description: json или xml
         required: false
+        description: Format of the response.
         schema:
           type: string
       - name: lang
         in: query
-        description: Язык возвращаемой информации
         required: false
+        description: Language for the response in <language code>_<country code> format.
         schema:
           type: string
       - name: date
         in: query
-        description: Дата
         required: false
+        description: Date for the schedule in ISO 8601 format (YYYY-MM-DD). Defaults to the first date of the thread.
         schema:
           type: string
       - name: show_systems
         in: query
-        description: Системы кодирования
         required: false
+        description: Specify the encoding system for station codes in the response.
         schema:
           type: string
       responses:
@@ -252,8 +312,8 @@ paths:
   /v3.0/nearest_stations/:
     get:
       tags:
-      - getNearestStations
-      summary: Список ближайших станций
+      - Stations
+      summary: Find nearest stations
       operationId: getNearestStations
       parameters:
       - name: apikey
@@ -264,31 +324,31 @@ paths:
           type: string
       - name: lat
         in: query
-        description: широта
+        description: Latitude
         required: true
         schema:
           type: number
       - name: lng
         in: query
-        description: долгота
+        description: Longitude
         required: true
         schema:
           type: number
       - name: distance
         in: query
-        description: радиус охвата
+        description: Search radius
         required: true
         schema:
           type: integer
       - name: format
         in: query
-        description: json или xml
+        description: Response format (json or xml)
         required: false
         schema:
           type: string
       - name: lang
         in: query
-        description: lang
+        description: Language
         required: false
         schema:
           type: string
@@ -302,46 +362,40 @@ paths:
   /v3.0/nearest_settlement/:
     get:
       tags:
-        - getNearestSettlement
-      summary: Список ближайших населенных пунктов
+      - Settlement
+      summary: Find nearest settlement
       operationId: getNearestSettlement
       parameters:
-        - name: apikey
-          in: query
-          description: API key
-          required: false
-          schema:
-            type: string
-        - name: lat
-          in: query
-          description: широта
-          required: true
-          schema:
-            type: number
-        - name: lng
-          in: query
-          description: долгота
-          required: true
-          schema:
-            type: number
-        - name: distance
-          in: query
-          description: радиус охвата
-          required: false
-          schema:
-            type: integer
-        - name: lang
-          in: query
-          description: Язык возвращаемой информации
-          required: false
-          schema:
-            type: string
-        - name: format
-          in: query
-          description: Формат ответа
-          required: false
-          schema:
-            type: string
+      - name: apikey
+        in: query
+        description: API key
+        required: false
+        schema:
+          type: string
+      - name: lat
+        in: query
+        description: Latitude
+        required: true
+        schema:
+          type: number
+      - name: lng
+        in: query
+        description: Longitude
+        required: true
+        schema:
+          type: number
+      - name: distance
+        in: query
+        description: Search radius
+        required: false
+        schema:
+          type: integer
+      - name: lang
+        in: query
+        description: Language
+        required: false
+        schema:
+          type: string
       responses:
         "200":
           description: success
@@ -352,40 +406,40 @@ paths:
   /v3.0/carrier/:
     get:
       tags:
-        - getCarrier
-      summary: Информация о перевозчике
+      - Carrier
+      summary: Request carrier details
       operationId: getCarrier
       parameters:
-        - name: apikey
-          in: query
-          description: API key
-          required: false
-          schema:
-            type: string
-        - name: code
-          in: query
-          description: Код перевозчика
-          required: true
-          schema:
-            type: string
-        - name: system
-          in: query
-          description: Система кодирования
-          required: false
-          schema:
-            type: string
-        - name: lang
-          in: query
-          description: Язык возвращаемой информации
-          required: false
-          schema:
-            type: string
-        - name: format
-          in: query
-          description: Формат ответа
-          required: false
-          schema:
-            type: string
+      - name: apikey
+        in: query
+        required: false
+        description: API key for access
+        schema:
+          type: string
+      - name: code
+        in: query
+        required: true
+        description: Carrier code in the default encoding system (Yandex).
+        schema:
+          type: string
+      - name: system
+        in: query
+        required: false
+        description: Encoding system for the carrier code. Default is "yandex".
+        schema:
+          type: string
+      - name: lang
+        in: query
+        required: false
+        description: Language for the response
+        schema:
+          type: string
+      - name: format
+        in: query
+        required: false
+        description: Response format. Defaults to "json".
+        schema:
+          type: string
       responses:
         "200":
           description: success
@@ -396,31 +450,31 @@ paths:
   /v3.0/stations_list/:
     get:
       tags:
-        - getStationsList
-      summary: Список всех станций
+      - StationsList
+      summary: Request full list of stations
       operationId: getStationsList
       parameters:
-        - name: apikey
-          in: query
-          description: API key
-          required: false
-          schema:
-            type: string
-        - name: lang
-          in: query
-          description: Язык возвращаемой информации
-          required: false
-          schema:
-            type: string
-        - name: format
-          in: query
-          description: Формат
-          required: false
-          schema:
-            type: string
+      - name: apikey
+        in: query
+        required: false
+        description: API key for access
+        schema:
+          type: string
+      - name: lang
+        in: query
+        required: false
+        description: Language for the response
+        schema:
+          type: string
+      - name: format
+        in: query
+        required: false
+        description: Response format.
+        schema:
+          type: string
       responses:
-        '200':
-          description: OK
+        "200":
+          description: success
           content:
             text/html:
               schema:
@@ -428,678 +482,31 @@ paths:
   /v3.0/copyright/:
     get:
       tags:
-        - getCopyright
-      summary: Копирайт
+      - Copyright
+      summary: Request API metadata
       operationId: getCopyright
       parameters:
-        - name: apikey
-          in: query
-          description: API key
-          required: false
-          schema:
-            type: string
-        - name: format
-          in: query
-          description: Формат ответа
-          required: false
-          schema:
-            type: string
+      - name: apikey
+        in: query
+        required: false
+        description: API key for access
+        schema:
+          type: string
+      - name: format
+        in: query
+        required: false
+        description: Response format.
+        schema:
+          type: string
       responses:
         "200":
           description: success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Copyright'
+                $ref: '#/components/schemas/CopyrightResponse'
 components:
   schemas:
-    SearchSchema:
-      type: object
-      properties:
-        pagination:
-          type: object
-          properties:
-            total:
-              type: number
-            limit:
-              type: number
-            offset:
-              type: number
-        interval_segments:
-          type: array
-          items:
-            type: object
-            properties:
-              from:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  title:
-                    type: string
-                  station_type:
-                    type: string
-                  station_type_name:
-                    type: string
-                  popular_title:
-                    type: string
-                  short_title:
-                    type: string
-                  transport_type:
-                    type: string
-                  type:
-                    type: string
-              thread:
-                type: object
-                properties:
-                  uid:
-                    type: string
-                  title:
-                    type: string
-                  interval:
-                    type: object
-                    properties:
-                      density:
-                        type: string
-                      end_time:
-                        type: string
-                      begin_time:
-                        type: number
-                  number:
-                    type: string
-                  short_title:
-                    type: string
-                  thread_method_link:
-                    type: string
-                  carrier:
-                    type: object
-                    properties:
-                      code:
-                        type: number
-                      contacts:
-                        type: string
-                      url:
-                        type: string
-                      logo_svg:
-                        type: string
-                      title:
-                        type: string
-                      phone:
-                        type: string
-                      codes:
-                        type: object
-                        properties:
-                          icao:
-                            type: string
-                          sirena:
-                            type: string
-                          iata:
-                            type: string
-                      address:
-                        type: string
-                      logo:
-                        type: string
-                      email:
-                        type: string
-                  transport_type:
-                    type: string
-                  vehicle:
-                    type: string
-                  transport_subtype:
-                    type: object
-                    properties:
-                      color:
-                        type: string
-                      code:
-                        type: string
-                      title:
-                        type: string
-                  express_type:
-                    type: string
-              departure_platform:
-                type: string
-              stops:
-                type: string
-              departure_terminal:
-                type: string
-              to:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  title:
-                    type: string
-                  station_type:
-                    type: string
-                  station_type_name:
-                    type: string
-                  popular_title:
-                    type: string
-                  short_title:
-                    type: string
-                  transport_type:
-                    type: string
-                  type:
-                    type: string
-              has_transfers:
-                type: boolean
-              tickets_info:
-                type: object
-                properties:
-                  et_marker:
-                    type: boolean
-                  places:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        currency:
-                          type: string
-                        price:
-                          type: object
-                          properties:
-                            cents:
-                              type: number
-                            whole:
-                              type: number
-                        name:
-                          type: string
-              duration:
-                type: number
-              arrival_terminal:
-                type: string
-              start_date:
-                type: string
-              arrival_platform:
-                type: string
-        segments:
-          type: array
-          items:
-            type: object
-            properties:
-              arrival:
-                type: string
-              from:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  title:
-                    type: string
-                  station_type:
-                    type: string
-                  station_type_name:
-                    type: string
-                  popular_title:
-                    type: string
-                  short_title:
-                    type: string
-                  transport_type:
-                    type: string
-                  type:
-                    type: string
-              thread:
-                type: object
-                properties:
-                  uid:
-                    type: string
-                  title:
-                    type: string
-                  interval:
-                    type: object
-                    properties:
-                      density:
-                        type: string
-                      end_time:
-                        type: string
-                      begin_time:
-                        type: number
-                  number:
-                    type: string
-                  short_title:
-                    type: string
-                  thread_method_link:
-                    type: string
-                  carrier:
-                    type: object
-                    properties:
-                      code:
-                        type: number
-                      contacts:
-                        type: string
-                      url:
-                        type: string
-                      logo_svg:
-                        type: string
-                      title:
-                        type: string
-                      phone:
-                        type: string
-                      codes:
-                        type: object
-                        properties:
-                          icao:
-                            type: string
-                          sirena:
-                            type: string
-                          iata:
-                            type: string
-                      address:
-                        type: string
-                      logo:
-                        type: string
-                      email:
-                        type: string
-                  transport_type:
-                    type: string
-                  vehicle:
-                    type: string
-                  transport_subtype:
-                    type: object
-                    properties:
-                      color:
-                        type: string
-                      code:
-                        type: string
-                      title:
-                        type: string
-                  express_type:
-                    type: string
-              departure_platform:
-                type: string
-              stops:
-                type: string
-              departure_terminal:
-                type: string
-              to:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  title:
-                    type: string
-                  station_type:
-                    type: string
-                  station_type_name:
-                    type: string
-                  popular_title:
-                    type: string
-                  short_title:
-                    type: string
-                  transport_type:
-                    type: string
-                  type:
-                    type: string
-              has_transfers:
-                type: boolean
-              tickets_info:
-                type: object
-                properties:
-                  et_marker:
-                    type: boolean
-                  places:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        currency:
-                          type: string
-                        price:
-                          type: object
-                          properties:
-                            cents:
-                              type: number
-                            whole:
-                              type: number
-                        name:
-                          type: string
-                  duration:
-                    type: number
-                  arrival_terminal:
-                    type: string
-                  start_date:
-                    type: string
-                  arrival_platform:
-                    type: string
-        search:
-          type: object
-          properties:
-            date:
-              type: string
-            to:
-              type: object
-              properties:
-                code:
-                  type: string
-                type:
-                  type: string
-                popular_title:
-                  type: string
-                short_title:
-                  type: string
-                title:
-                  type: string
-            from:
-              type: object
-              properties:
-                code:
-                  type: string
-                type:
-                  type: string
-                popular_title:
-                  type: string
-                short_title:
-                  type: string
-                title:
-                  type: string
-    ScheduleSchema:
-      type: object
-      properties:
-        date:
-          type: string
-        pagination:
-          type: object
-          properties:
-            total:
-              type: number
-            limit:
-              type: number
-            offset:
-              type: number
-        station:
-          type: object
-          properties:
-            code:
-              type: string
-            station_type:
-              type: string
-            station_type_name:
-              type: string
-            title:
-              type: string
-            popular_title:
-              type: string
-            short_title:
-              type: string
-            codes:
-              type: object
-              properties:
-                yandex:
-                  type: string
-                esr:
-                  type: string
-            transport_type:
-              type: string
-            type:
-              type: string
-        schedule:
-          type: array
-          items:
-            type: object
-            properties:
-              except_days:
-                type: string
-              arrival:
-                type: string
-              thread:
-                type: object
-                properties:
-                  uid:
-                    type: string
-                  title:
-                    type: string
-                  number:
-                    type: string
-                  short_title:
-                    type: string
-                  carrier:
-                    type: object
-                    properties:
-                      code:
-                        type: number
-                      codes:
-                        type: object
-                        properties:
-                          icao:
-                            type: string
-                          sirena:
-                            type: string
-                          iata:
-                            type: string
-                      title:
-                        type: string
-                  transport_type:
-                    type: string
-                  vehicle:
-                    type: string
-                  transport_subtype:
-                    type: object
-                    properties:
-                      color:
-                        type: string
-                      code:
-                        type: string
-                      title:
-                        type: string
-                  express_type:
-                    type: string
-              is_fuzzy:
-                  type: boolean
-              days:
-                  type: string
-              stops:
-                  type: string
-              departure:
-                  type: string
-              terminal:
-                  type: string
-              platform:
-                  type: string
-        schedule_direction:
-          type: object
-          properties:
-            code:
-              type: string
-            title:
-              type: string
-        directions:
-          type: array
-          items:
-            type: object
-            properties:
-              code:
-                type: string
-              title:
-                type: string
-    Thread:
-      type: object
-      properties:
-        except_days:
-          type: string
-        arrival_date:
-          type: string
-          format: string
-        from:
-          type: string
-        uid:
-          type: string
-        title:
-          type: string
-        interval:
-          type: object
-          properties:
-            density:
-              type: string
-            end_time:
-              type: string
-              format: string
-            begin_time:
-              type: string
-              format: string
-        departure_date:
-          type: string
-          format: string
-        start_time:
-          type: string
-        number:
-          type: string
-        short_title:
-          type: string
-        days:
-          type: string
-        to:
-          type: string
-        carrier:
-          type: object
-          properties:
-            code:
-              type: integer
-            offices:
-              type: array
-              items: {}
-            codes:
-              type: object
-              properties:
-                icao:
-                  type: string
-                sirena:
-                  type: string
-                iata:
-                  type: string
-            title:
-              type: string
-        transport_type:
-          type: string
-        stops:
-          type: array
-          items:
-            type: object
-            properties:
-              arrival:
-                type: string
-                format: string
-              departure:
-                type: string
-                format: string
-              terminal:
-                type: string
-              platform:
-                type: string
-              station:
-                type: object
-                properties:
-                  codes:
-                    type: object
-                    properties:
-                      express:
-                        type: string
-                      yandex:
-                        type: string
-                      esr:
-                        type: string
-                  title:
-                    type: string
-                  popular_title:
-                    type: string
-                  short_title:
-                    type: string
-                  code:
-                    type: string
-                  type:
-                    type: string
-              stop_time:
-                type: integer
-              duration:
-                type: number
-        vehicle:
-          type: string
-        start_date:
-          type: string
-          format: string
-        transport_subtype:
-          type: object
-          properties:
-            color:
-              type: string
-            code:
-              type: string
-            title:
-              type: string
-        express_type:
-          type: string
-    StationsList:
-      type: object
-      properties:
-        countries:
-          type: array
-          items:
-            type: object
-            properties:
-              regions:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    settlements:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          title:
-                            type: string
-                          codes:
-                            type: object
-                            properties:
-                              esr_code:
-                                type: string
-                              yandex_code:
-                                type: string
-                          stations:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                direction:
-                                  type: string
-                                codes:
-                                  type: object
-                                  properties:
-                                    esr_code:
-                                      type: string
-                                    yandex_code:
-                                      type: string
-                                station_type:
-                                  type: string
-                                title:
-                                  type: string
-                                longitude:
-                                  oneOf:
-                                    - type: number
-                                    - type: string
-                                transport_type:
-                                  type: string
-                                latitude:
-                                  oneOf:
-                                    - type: number
-                                    - type: string
-                    codes:
-                      type: object
-                      properties:
-                        esr_code:
-                          type: string
-                        yandex_code:
-                          type: string
-                        title:
-                          type: string
-              codes:
-                type: object
-                properties:
-                  esr_code:
-                    type: string
-                  yandex_code:
-                    type: string
-              title:
-                type: string
     Stations:
       type: object
       properties:
@@ -1146,8 +553,8 @@ components:
         majority:
           type: integer
         type_choices:
-          $ref: '#/components/schemas/Schedule'
-    Schedule:
+          $ref: '#/components/schemas/TypeChoicesSchedule'
+    TypeChoicesSchedule:
       type: object
       properties:
         desktop_url:
@@ -1159,83 +566,694 @@ components:
       properties:
         distance:
           type: number
+          description: Расстояние до найденного города, в километрах
         code:
           type: string
+          description: Код города в системе кодирования Яндекс Расписаний
         title:
           type: string
+          description: Название города
         popular_title:
           type: string
+          description: Общепринятое название города
         short_title:
           type: string
+          description: Краткое название города
         lat:
           type: number
+          description: Широта
         lng:
           type: number
+          description: Долгота
         type:
           type: string
+          description: Тип транспортного пункта (station — станция; settlement — поселение)
     CarrierResponse:
       type: object
       properties:
         carrier:
           $ref: '#/components/schemas/Carrier'
+    CarrierCodes:
+      type: object
+      properties:
+        icao:
+          type: string
+          description: ICAO code.
+        sirena:
+          type: string
+          description: Sirena code.
+        iata:
+          type: string
+          description: IATA code.
+    ScheduleBetweenStations:
+      type: object
+      properties:
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        interval_segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/IntervalSegment'
+        segments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Segment'
+        search:
+          $ref: '#/components/schemas/Search'
+    IntervalSegment:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/SegmentStation'
+        thread:
+          $ref: '#/components/schemas/ThreadDetails'
+        departure_platform:
+          type: string
+          description: 'Platform number at the departure station.'
+          nullable: true
+        stops:
+          type: string
+          maxLength: 1000
+          description: 'Stations where the train stops during its journey.'
+        departure_terminal:
+          type: string
+          description: 'Terminal name at the departure station.'
+          nullable: true
+        to:
+          $ref: '#/components/schemas/SegmentStation'
+        has_transfers:
+          type: boolean
+          description: 'Indicates if there are transfers along the route.'
+        tickets_info:
+          $ref: '#/components/schemas/TicketsInfo'
+        duration:
+          type: integer
+          description: 'Duration of the journey in seconds.'
+        arrival_terminal:
+          type: string
+          description: 'Terminal name at the arrival station.'
+          nullable: true
+        start_date:
+          type: string
+          description: 'Departure date of the train.'
+        arrival_platform:
+          type: string
+          description: 'Platform number at the arrival station.'
+          nullable: true
+    Segment:
+      type: object
+      properties:
+        arrival:
+          type: string
+          description: 'Arrival time in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm). If no timezone is provided, the time is in the station timezone.'
+        from:
+          $ref: '#/components/schemas/SegmentStation'
+        thread:
+          $ref: '#/components/schemas/ThreadDetails'
+        departure_platform:
+          type: string
+          description: 'Platform number at the departure station.'
+          nullable: true
+        departure:
+          type: string
+          description: 'Departure time in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm). If no timezone is provided, the time is in the station timezone.'
+        stops:
+          type: string
+          maxLength: 1000
+          description: 'Stations where the train stops. "Everywhere" means stops at all stations. An empty string means no stops.'
+        departure_terminal:
+          type: string
+          description: 'Terminal name at the departure station.'
+          nullable: true
+        to:
+          $ref: '#/components/schemas/SegmentStation'
+        has_transfers:
+          type: boolean
+          description: 'Indicates if there are transfers along the route.'
+        tickets_info:
+          $ref: '#/components/schemas/TicketsInfo'
+        duration:
+          type: integer
+          description: 'Duration of the journey in seconds.'
+        arrival_terminal:
+          type: string
+          description: 'Terminal name at the arrival station.'
+          nullable: true
+        start_date:
+          type: string
+          description: 'Departure date of the train.'
+        arrival_platform:
+          type: string
+          description: 'Platform number at the arrival station.'
+          nullable: true
+    SegmentStation:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'The departure point code in the Yandex Timetable encoding system.'
+        title:
+          type: string
+          description: 'The name of the departure point.'
+        station_type:
+          type: string
+          description: 'The type of departure point.'
+          enum:
+            - station
+            - platform
+            - stop
+            - checkpoint
+            - post
+            - crossing
+            - overtaking_point
+            - train_station
+            - airport
+            - bus_station
+            - bus_stop
+            - unknown
+            - port
+            - port_point
+            - wharf
+            - river_port
+            - marine_station
+        station_type_name:
+          type: string
+          description: 'Name of the type of the departure point, depends on the language of the response.'
+        popular_title:
+          type: string
+          description: 'Commonly used name of the departure point.'
+        short_title:
+          type: string
+          description: 'Short name of the departure point.'
+        transport_type:
+          type: string
+          description: 'Type of departing transport.'
+          enum:
+            - plane
+            - train
+            - suburban
+            - bus
+            - water
+            - helicopter
+        type:
+          type: string
+          description: 'Kind of departure point.'
+          enum:
+            - station
+            - settlement
+    ThreadDetails:
+      type: object
+      properties:
+        uid:
+          type: string
+          maxLength: 100
+          description: 'The identifier of the thread used in Yandex Timetables.'
+        title:
+          type: string
+          description: 'The name of the thread, composed of the full names of the first and last stations.'
+        interval:
+          $ref: '#/components/schemas/Interval'
+        number:
+          type: string
+          description: 'The flight number.'
+        short_title:
+          type: string
+          description: 'Short name of the thread, composed of the short names of the first and last stations.'
+        thread_method_link:
+          type: string
+          description: 'URL to request information about the thread using the uid. Ensure to include the access key to the API.'
+        carrier:
+          $ref: '#/components/schemas/Carrier'
+        transport_type:
+          type: string
+          description: 'Type of transport.'
+          enum:
+            - plane
+            - train
+            - suburban
+            - bus
+            - water
+            - helicopter
+        vehicle:
+          type: string
+          description: 'Name of the vehicle.'
+        transport_subtype:
+          $ref: '#/components/schemas/TransportSubtype'
+        express_type:
+          type: string
+          nullable: true
+          description: 'Indicates whether it is an express or aeroexpress. Default is null.'
+    Interval:
+      type: object
+      properties:
+        density:
+          type: string
+          description: 'Description of the frequency of movement in free text.'
+        end_time:
+          type: string
+          description: 'The end time for movement along the thread, always in the departure stations timezone. It can be in one of two formats: YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS.'
+        begin_time:
+          type: string
+          description: 'The start time for movement along the thread, always in the departure stations timezone.'
+    TicketsInfo:
+      type: object
+      properties:
+        et_marker:
+          type: boolean
+          description: 'Indicates whether it is possible to purchase an electronic ticket.'
+        places:
+          type: array
+          items:
+            $ref: '#/components/schemas/TicketPlace'
+    TicketPlace:
+      type: object
+      properties:
+        currency:
+          type: string
+          description: 'Currency identifier in which the price is given.'
+        price:
+          $ref: '#/components/schemas/Price'
+        name:
+          type: string
+          description: 'The name of the ticket type (e.g., "economy").'
+    Price:
+      type: object
+      properties:
+        cents:
+          type: integer
+          description: 'The number of additional units of the currency (e.g., kopecks or cents).'
+        whole:
+          type: integer
+          description: 'The number of main units of the currency (e.g., rubles or dollars).'
     Carrier:
       type: object
       properties:
         code:
           type: integer
-          description: Код перевозчика в системе Яндекс Расписаний
+          description: 'Carrier code in the Yandex Timetable encoding system.'
         contacts:
           type: string
-          description: Контактная информация
+          description: 'Contact information in free text format.'
         url:
           type: string
-          description: Ссылка на сайт перевозчика
+          description: 'URL to the carriers website.'
+        logo_svg:
+          type: string
+          description: 'Link to the carriers logo in SVG format, used by Yandex.'
         title:
           type: string
-          description: Название перевозчика
+          description: 'Name of the carrier.'
         phone:
           type: string
-          description: Контактный телефон перевозчика
+          description: 'Contact phone number of the carrier.'
+        codes:
+          $ref: '#/components/schemas/CarrierCodes'
         address:
           type: string
-          description: Адрес перевозчика
+          description: 'Legal address of the carrier.'
         logo:
           type: string
-          description: Ссылка на логотип перевозчика
+          description: 'Link to the carriers logo in raster format, used by Yandex.'
         email:
           type: string
-          description: Электронная почта перевозчика
+          description: 'Carriers email address.'
+    TransportSubtype:
+      type: object
+      properties:
+        color:
+          type: string
+          description: 'The main color of the transport vehicle in hexadecimal format.'
+        code:
+          type: string
+          description: 'The code for the transport subtype within the specified transport type (e.g., "suburban", "helicopter", etc.).'
+          enum:
+            - helicopter
+            - rex
+            - sputnik
+            - skiarrow
+            - shezh
+            - skirus
+            - city
+            - kalina
+            - vostok
+            - prostoraltaya
+            - 14vag
+            - last
+            - exprdal
+            - volzhex
+            - stdplus
+            - express
+            - skor
+            - fiztekh
+            - vag6
+            - river
+            - sea
+            - plane
+            - train
+            - suburban
+            - bus
+            - water
+        title:
+          type: string
+          description: 'A natural language description of the transport subtype.'
+    Search:
+      type: object
+      properties:
+        date:
+          type: string
+          description: 'The date on which the flight list was received, in the format YYYY-MM-DD.'
+        to:
+          $ref: '#/components/schemas/SearchStation'
+        from:
+          $ref: '#/components/schemas/SearchStation'
+    SearchStation:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 'The departure or arrival point code in the Yandex Timetable coding system.'
+        type:
+          type: string
+          description: 'The type of the station or settlement. Possible values - "station" or "settlement".'
+          enum:
+            - station
+            - settlement
+        popular_title:
+          type: string
+          description: 'The commonly used name of the station or settlement.'
+        short_title:
+          type: string
+          description: 'The short name of the station or settlement.'
+        title:
+          type: string
+          description: 'The full name of the station or settlement.'
+    ScheduleForStation:
+      type: object
+      properties:
+        date:
+          type: string
+          nullable: true
+          description: The date for which the schedule is provided. Null if the `date` parameter is not specified in the request.
+        pagination:
+          $ref: '#/components/schemas/Pagination'
+        station:
+          $ref: '#/components/schemas/ScheduleStation'
+        schedule:
+          type: array
+          items:
+            $ref: '#/components/schemas/Schedule'
+        schedule_direction:
+          $ref: '#/components/schemas/ScheduleDirection'
+        directions:
+          $ref: '#/components/schemas/Directions'
+    ScheduleStation:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The station code in the Yandex Schedules system.
+        station_type:
+          type: string
+          description: The station type.
+        station_type_name:
+          type: string
+          description: Localized name of the station type, depending on the response language.
+        title:
+          type: string
+          description: Full station name.
+        popular_title:
+          type: string
+          description: Commonly used station name.
+        short_title:
+          type: string
+          description: Short station name.
         codes:
-          type: object
-          properties:
-            icao:
-              type: string
-              description: Код перевозчика в системе ICAO
-            sirena:
-              type: string
-              description: Код перевозчика в системе Sirena
-            iata:
-              type: string
-              description: Код перевозчика в системе IATA
-    Copyright:
+          $ref: '#/components/schemas/StationCodes'
+        transport_type:
+          type: string
+          description: Type of transport served by the station.
+        type:
+          type: string
+          description: Station category. For schedules, this is always `station`.
+    Schedule:
+      type: object
+      properties:
+        except_days:
+          type: string
+          description: Days when the route does not operate, even if included in the `days` schedule.
+        arrival:
+          type: string
+          description: Arrival time in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm).
+        thread:
+          $ref: '#/components/schemas/ThreadDetails'
+        is_fuzzy:
+          type: boolean
+          description: Indicates if the departure and arrival times are approximate.
+        days:
+          type: string
+          description: Days when the route operates.
+        stops:
+          type: string
+          maxLength: 1000
+          description: List of intermediate stops in free text.
+        departure:
+          type: string
+          description: Departure time in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm).
+        terminal:
+          type: string
+          nullable: true
+          description: Airport terminal (e.g., "D"). `null` if terminal information is unavailable.
+        platform:
+          type: string
+          description: Platform or track from which the train departs (e.g., "Track 3").
+    StationCodes:
+      type: object
+      properties:
+        yandex:
+          type: string
+          description: Station code in the Yandex Schedules system.
+        esr:
+          type: string
+          description: Station code in the ESR coding system.
+    ScheduleDirection:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Direction code. Possible values
+            - "arrival" for arrivals at the station.
+            - Specific names (e.g., "to Moscow") for trains in that direction.
+            - "all" for all directions.
+        title:
+          type: string
+          description: Direction name. Examples - "arrival," "all directions," "to Moscow," etc.
+    Directions:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Direction code, which can be
+            - "all" for all directions at the station.
+            - "arrival" for arriving directions only.
+            - "departure" for departing directions only.
+            - Custom values in free-form text.
+        title:
+          type: string
+          description: Direction name. Typically matches the code for custom values (e.g., "to Moscow").
+    Thread:
+      type: object
+      properties:
+        except_days:
+          type: string
+          description: "Days when the thread does not run, even if they are part of the days specified."
+        arrival_date:
+          type: string
+          description: "Arrival date at the station specified in the 'to' parameter. Included only if the thread is not an interval-based thread."
+        from:
+          type: string
+          description: "The departure station specified in the 'from' parameter."
+        uid:
+          type: string
+          maxLength: 100
+          description: "Unique identifier for the thread in Yandex Schedules."
+        title:
+          type: string
+          description: "Full name of the thread, composed of the full names of the first and last stations."
+        interval:
+          $ref: '#/components/schemas/Interval'
+        departure_date:
+          type: string
+          description: "Departure date from the station specified in the 'from' parameter. Included only if the thread is not interval-based."
+        number:
+          type: string
+          description: "Flight number for the thread."
+        short_title:
+          type: string
+          description: "Short name of the thread, composed of short names of the first and last stations."
+        days:
+          type: string
+          description: "Days when the thread operates."
+        to:
+          type: string
+          description: "Arrival station specified in the 'to' parameter."
+        carrier:
+          $ref: '#/components/schemas/ThreadCarrier'
+        stops:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreadStops'
+        vehicle:
+          type: string
+          description: "Name of the vehicle used for the thread."
+        start_date:
+          type: string
+          description: "Start date of the thread's operation."
+        transport_subtype:
+          $ref: '#/components/schemas/TransportSubtype'
+        express_type:
+          type: string
+          description: "Indicates whether the thread is an express or aeroexpress."
+    ThreadStops:
+      type: object
+      properties:
+        arrival:
+          type: string
+          description: "Arrival time at the station in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm)."
+        departure:
+          type: string
+          description: "Departure time from the station in ISO 8601 format (YYYY-MM-DDThh:mm:ss±hh:mm)."
+        duration:
+          type: integer
+          description: "Travel time between stations in seconds."
+        stop_time:
+          type: integer
+          description: "Duration of the stop in seconds."
+        station:
+          $ref: '#/components/schemas/ScheduleStation'
+        terminal:
+          type: string
+          nullable: true
+          description: "Terminal at the airport (e.g., 'D'). If the terminal information is not available, this is null."
+        platform:
+          type: string
+          description: "Platform or track from which the train departs (e.g., 'track 3'). If platform information is not available, this field is empty."
+    ThreadCarrier:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: "Carrier code in the Yandex Raspisania coding system."
+        title:
+          type: string
+          description: "Name of the carrier."
+        codes:
+          $ref: '#/components/schemas/CarrierCodes'
+    StationsList:
+      type: object
+      properties:
+        countries:
+          type: array
+          description: "List of countries."
+          items:
+            $ref: '#/components/schemas/Country'
+    Country:
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Region'
+        codes:
+          $ref: '#/components/schemas/StationsListCodes'
+        title:
+          type: string
+          description: "Name of the country."
+    Region:
+      type: object
+      properties:
+        settlements:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationsListSettlement'
+        codes:
+          $ref: '#/components/schemas/StationsListCodes'
+        title:
+          type: string
+          description: "Name of the region."
+    StationsListSettlement:
+      type: object
+      properties:
+        title:
+          type: string
+          description: "Name of the settlement."
+        codes:
+          $ref: '#/components/schemas/StationsListCodes'
+        stations:
+          type: array
+          items:
+            $ref: '#/components/schemas/StationsListStation'
+    StationsListStation:
+      type: object
+      properties:
+        direction:
+          type: string
+          description: "Train direction for the station. Empty if the station is not railway-related."
+        codes:
+          $ref: '#/components/schemas/StationsListStationCodes'
+        station_type:
+          type: string
+          description: "Type of the station."
+        title:
+          type: string
+          description: "Name of the station."
+        transport_type:
+          type: string
+          description: "Type of transport passing through the station."
+    StationsListCodes:
+      type: object
+      properties:
+        yandex_code:
+          type: string
+          description: "Code in the Yandex Raspisania coding system."
+    StationsListStationCodes:
+      type: object
+      properties:
+        yandex_code:
+          type: string
+          description: "Code in the Yandex Raspisania coding system."
+        esr_code:
+         type: string
+         description: "Code of the railway station in the ESR coding system."
+    CopyrightResponse:
       type: object
       properties:
         copyright:
-          type: object
-          properties:
-            logo_vm:
-              type: string
-            url:
-              type: string
-            logo_vd:
-              type: string
-            logo_hy:
-              type: string
-            logo_hd:
-              type: string
-            logo_vy:
-              type: string
-            logo_hm:
-              type: string
-            text:
-              type: string
+          $ref: '#/components/schemas/Copyright'
+    Copyright:
+      type: object
+      properties:
+        logo_vm:
+          type: string
+          description: Vertical monochrome banner.
+        url:
+          type: string
+          description: URL of Yandex Schedules.
+        logo_vd:
+          type: string
+          description: Vertical black-and-white banner.
+        logo_hy:
+          type: string
+          description: Horizontal color banner.
+        logo_hd:
+          type: string
+          description: Horizontal black-and-white banner.
+        logo_vy:
+          type: string
+          description: Vertical color banner.
+        text:
+          type: string
+          description: Notification text.
+        logo_hm:
+          type: string
+          description: Horizontal monochrome banner.
+
