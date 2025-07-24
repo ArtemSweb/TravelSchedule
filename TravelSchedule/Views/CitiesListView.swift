@@ -16,7 +16,6 @@ struct CitiesListView: View {
     @StateObject var viewModel = CitiesListViewModel()
     @State private var fetchTask: Task<Void, Never>?
     
-//    let fromField: Bool
     let onSettlementSelected: (Settlement) -> Void
     
     // MARK: - Content
@@ -25,7 +24,7 @@ struct CitiesListView: View {
             Color.whiteApp.ignoresSafeArea()
             
             if viewModel.isLoading {
-                ProgressView().frame(maxHeight: .infinity)
+                ProgressView()
             } else if viewModel.loadingFailed {
                 VStack {
                     Text("Ошибка")

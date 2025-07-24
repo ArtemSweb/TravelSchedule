@@ -13,7 +13,7 @@ struct StationListView: View {
     @ObservedObject var viewModel: StationListViewModel
     
     let onStationSelected: (Station) -> Void
-    let fromField: Bool
+//    let fromField: Bool
     
     // MARK: - Content
     var body: some View {

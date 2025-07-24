@@ -15,6 +15,8 @@ final class NavCoordinator: ObservableObject {
     @Published var selectedStationTo: String = ""
     @Published var timeFilters: Set<PeriodicEnum> = []
     @Published var showTransfers: Bool? = nil
+    @Published var selectedStationFromCode: String = ""
+    @Published var selectedStationToCode: String = ""
     
     var isFiltersValid: Bool {
         !timeFilters.isEmpty && showTransfers != nil

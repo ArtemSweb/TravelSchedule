@@ -50,7 +50,7 @@ struct ContentView: View {
                                     coordinator.selectedStationTo = station.title
                                 }
                                 coordinator.path = NavigationPath()
-                            }, fromField: fromField
+                            }
                         )
                     case .tickets:
                         TicketListView(coordinator: coordinator)

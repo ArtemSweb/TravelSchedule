@@ -91,7 +91,10 @@ struct MainView: View {
                             )
                             .padding(.horizontal, 16)
                             
-                            Button(action: { fromTofromTo.toggle() }) {
+                            Button(action: {
+                                swap(&coordinator.selectedCityFrom, &coordinator.selectedCityTo)
+                                swap(&coordinator.selectedStationFrom, &coordinator.selectedStationTo)
+                                swap(&coordinator.selectedStationFromCode, &coordinator.selectedStationToCode) }){
                                 Image(.changeButtonIcon)
                                     .font(.system(size: 24))
                                     .foregroundStyle(.blue)
