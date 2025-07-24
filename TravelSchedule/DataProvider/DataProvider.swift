@@ -19,7 +19,6 @@ actor DataProvider: DataProviderProtocol {
         }
         
         let response = try await ServiceManager.shared.getStationsList()
-        print(response.countries?.first?.title)
         let convertedSettlements = try converter.convertSettlements(from: response)
         settlements = convertedSettlements
         return convertedSettlements

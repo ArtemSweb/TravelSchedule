@@ -12,20 +12,20 @@ import SwiftUI
 struct CitiesListView: View {
     
     // MARK: - Properties
-    @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var coordinator: NavCoordinator
     @StateObject var viewModel = CitiesListViewModel()
     @State private var fetchTask: Task<Void, Never>?
     
-    let fromField: Bool
+//    let fromField: Bool
+    let onSettlementSelected: (Settlement) -> Void
     
     // MARK: - Content
     var body: some View {
         ZStack {
             Color.whiteApp.ignoresSafeArea()
+            
             if viewModel.isLoading {
-                ProgressView()
+                ProgressView().frame(maxHeight: .infinity)
             } else if viewModel.loadingFailed {
                 VStack {
                     Text("Ошибка")
@@ -74,15 +74,8 @@ struct CitiesListView: View {
     
     private func cityButton(for settlement: Settlement) -> some View {
         Button(action: {
-            if fromField {
-                coordinator.selectedCityFrom = settlement.title
-                coordinator.selectedStationFrom = ""
-            } else {
-                coordinator.selectedCityTo = settlement.title
-                coordinator.selectedStationTo = ""
-            }
-            coordinator.path.append(RouteEnum.stationPicker(city: settlement, fromField: fromField))
-        }) {
+                onSettlementSelected(settlement)
+            }) {
             HStack {
                 Text(settlement.title)
                     .font(.regular17)
@@ -132,9 +125,9 @@ struct CitiesListView: View {
 
 // MARK: - ChangeCityView_Preview
 
-#Preview {
-    CitiesListView(
-        coordinator: NavCoordinator(),
-        fromField: true
-    )
-}
+//#Preview {
+//    CitiesListView(
+//        coordinator: NavCoordinator(),
+//        fromField: true
+//    )
+//}

@@ -6,12 +6,10 @@
 //
 
 import SwiftUI
-import OpenAPIURLSession
-import OpenAPIRuntime
 
 struct ContentView: View {
     @StateObject private var coordinator = NavCoordinator()
-        
+    
     var body: some View {
         ZStack {
             Color.whiteApp
@@ -35,9 +33,25 @@ struct ContentView: View {
                 .navigationDestination(for: RouteEnum.self) { route in
                     switch route {
                     case .cityPicker(let fromField):
-                        CitiesListView(coordinator: coordinator, fromField: fromField)
-                    case .stationPicker(let city, let fromField):
-                        StationListView(coordinator: coordinator, city: city, fromField: fromField)
+                        CitiesListView(
+                            onSettlementSelected: { settlement in
+                                coordinator.path.append(RouteEnum.stationPicker(settlement: settlement, fromField: fromField))
+                            }
+                        )
+                    case .stationPicker(let settlement, let fromField):
+                        StationListView(
+                            viewModel: StationListViewModel(settlement: settlement),
+                            onStationSelected: { station in
+                                if fromField {
+                                    coordinator.selectedCityFrom = settlement.title
+                                    coordinator.selectedStationFrom = station.title
+                                } else {
+                                    coordinator.selectedCityTo = settlement.title
+                                    coordinator.selectedStationTo = station.title
+                                }
+                                coordinator.path = NavigationPath()
+                            }, fromField: fromField
+                        )
                     case .tickets:
                         TicketListView(coordinator: coordinator)
                     case .filters:
@@ -53,9 +67,6 @@ struct ContentView: View {
                     coordinator.showTransfers = nil
                 }
             }
-//            .onAppear {
-//                testStationsList()
-//            }
         }
     }
 }

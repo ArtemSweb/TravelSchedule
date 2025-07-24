@@ -9,8 +9,8 @@ import Foundation
 
 @MainActor
 final class StationListViewModel: ObservableObject {
-    @Published private(set) var allStations: [Station]
     @Published var searchText: String = ""
+    private(set) var allStations: [Station]
     
     var isSearching: Bool {
         !searchText.isEmpty

@@ -8,10 +8,10 @@ import SwiftUI
 
 @MainActor
 final class CitiesListViewModel: ObservableObject {
-    @Published private(set) var allSettlements: [Settlement] = []
-    @Published private(set) var isLoading = false
-    @Published private(set) var loadingFailed = false
     @Published var searchText: String = ""
+    @Published var isLoading = false
+    @Published var loadingFailed = false
+    @Published var allSettlements: [Settlement] = []
     
     private let dataProvider: DataProviderProtocol
     
@@ -36,12 +36,12 @@ final class CitiesListViewModel: ObservableObject {
         loadingFailed = false
         do {
             allSettlements = try await dataProvider.fetchSettlements()
+            isLoading = false
         } catch {
             if !(error is CancellationError){
                 print(error.localizedDescription)
                 loadingFailed = true
             }
         }
-        isLoading = false
     }
 }

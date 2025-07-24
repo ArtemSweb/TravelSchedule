@@ -9,14 +9,11 @@ import SwiftUI
 
 struct StationListView: View {
     // MARK: - Properties
-    @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var coordinator: NavCoordinator
     @ObservedObject var viewModel: StationListViewModel
     
-    let city: String
+    let onStationSelected: (Station) -> Void
     let fromField: Bool
-    
     
     // MARK: - Content
     var body: some View {
@@ -48,26 +45,19 @@ struct StationListView: View {
                     emptyState
                 } else {
                     ForEach(viewModel.filteredStations) { station in
-                        stationButton(for: station.title)
+                        stationButton(for: station)
                     }
                 }
             }
         }
     }
     
-    private func stationButton(for station: String) -> some View {
+    private func stationButton(for station: Station) -> some View {
         Button(action: {
-            if fromField {
-                coordinator.selectedCityFrom = city
-                coordinator.selectedStationFrom = station
-            } else {
-                coordinator.selectedCityTo = city
-                coordinator.selectedStationTo = station
-            }
-            coordinator.path = NavigationPath()
+            onStationSelected(station)
         }) {
             HStack {
-                Text(station)
+                Text(station.title)
                     .font(.regular17)
                     .foregroundStyle(.blackApp)
                 
