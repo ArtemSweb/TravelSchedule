@@ -11,7 +11,7 @@ import SwiftUI
 struct CarrierInfoView: View {
     @Environment(\.dismiss) var dismiss
     
-    let carrier: TicketModel
+    let carrier: Route
     
     var body: some View {
         ZStack {
@@ -24,7 +24,7 @@ struct CarrierInfoView: View {
                     .scaledToFit()
                     .frame(minWidth: 343)
                 
-                Text(carrier.operatorName)
+                Text(carrier.carrier.title)
                     .font(.bold24)
                     .padding(.vertical, 16)
                     .foregroundColor(.blackApp)
@@ -56,6 +56,6 @@ struct CarrierInfoView: View {
     }
 }
 
-#Preview {
-    CarrierInfoView(carrier: TicketModel.init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"))
-}
+//#Preview {
+//    CarrierInfoView(carrier: TicketModel.init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"))
+//}

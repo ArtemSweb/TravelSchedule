@@ -25,7 +25,7 @@ struct Filters {
     }
 }
 
-struct Route: Identifiable, Sendable {
+struct Route: Hashable, Identifiable, Sendable {
     let id: String
     let date: Date
     let departure: Date

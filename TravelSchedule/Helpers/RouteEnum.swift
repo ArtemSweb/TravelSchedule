@@ -11,5 +11,5 @@ enum RouteEnum: Hashable {
     case stationPicker(settlement: Settlement, fromField: Bool)
     case tickets(settlementFrom: Settlement, stationFrom: Station, settlementTo: Settlement, stationTo: Station)
     case filters
-    case carrierInfo(TicketModel)
+    case carrierInfo(Route)
 }
