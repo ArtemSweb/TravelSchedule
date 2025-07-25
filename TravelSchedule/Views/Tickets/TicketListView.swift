@@ -10,78 +10,51 @@ import SwiftUI
 
 struct TicketListView: View {
     @ObservedObject var coordinator: NavCoordinator
+    @ObservedObject var viewModel: TicketListViewModel
     @Environment(\.dismiss) var dismiss
-    @StateObject var viewModel: TicketListViewModel
-    @State private var fetchTask: Task<Void, Never>?
     
-    let tickets: [TicketModel] = [
-        .init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
-        .init(operatorName: "ФГК", date: "15 января", departure: "01:15", arrival: "09:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_FGK", note: nil),
-        .init(operatorName: "Урал логистика", date: "16 января", departure: "12:30", arrival: "21:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_URAL", note: nil),
-        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
-        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil),
-        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil),
-        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil)
-    ]
+//    let tickets: [TicketModel] = [
+//        .init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
+//        .init(operatorName: "ФГК", date: "15 января", departure: "01:15", arrival: "09:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_FGK", note: nil),
+//        .init(operatorName: "Урал логистика", date: "16 января", departure: "12:30", arrival: "21:00", duration: "9 часов", withTransfer: false, operatorLogo: "mock_URAL", note: nil),
+//        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"),
+//        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil),
+//        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil),
+//        .init(operatorName: "РЖД", date: "17 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: false, operatorLogo: "mock_RJD", note: nil)
+//    ]
     
-    private var filteredTickets: [TicketModel] {
-        tickets.filter { ticket in
-            // Фильтр по пересадкам
-            if let show = coordinator.showTransfers, show != ticket.withTransfer {
-                return false
-            }
-            
-            // Фильтр по времени
-            guard coordinator.timeFilters.isEmpty else {
-                return coordinator.timeFilters.contains(ticket.departurePeriod)
-            }
-            
-            return true
-        }
-    }
-    
+//    private var filteredTickets: [TicketModel] {
+//        tickets.filter { ticket in
+//            // Фильтр по пересадкам
+//            if let show = coordinator.showTransfers, show != ticket.withTransfer {
+//                return false
+//            }
+//            
+//            // Фильтр по времени
+//            guard coordinator.timeFilters.isEmpty else {
+//                return coordinator.timeFilters.contains(ticket.departurePeriod)
+//            }
+//            
+//            return true
+//        }
+//    }
+//    
 //    private var routeTitle: String {
 //        "\(coordinator.selectedCityFrom) (\(coordinator.selectedStationFrom)) → \(coordinator.selectedCityTo) (\(coordinator.selectedStationTo))"
 //    }
-    
+//    
     var body: some View {
         ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
-            
             VStack(spacing: 16) {
                 RouteHeaderView(title: viewModel.title)
                 
-                if viewModel.isLoading {
-                    ProgressView()
-                } else if viewModel.loadingFailed {
-                    Text("Ошибка")
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 8) {
-                            
-                            if tickets.isEmpty {
-                                EmptyTicketsView()
-                            } else {
-                                ForEach(tickets) { ticket in
-                                    TicketButton(ticket: ticket, action: {
-                                        coordinator.path.append(RouteEnum.carrierInfo(ticket))
-                                    })
-                                }
-                            }
-                        }
-                    }
+                ZStack(alignment: .bottom) {
+                    TicketsScrollView(tickets: filteredTickets, coordinator: coordinator)
                     
                     FilterButton(coordinator: coordinator)
                         .padding(.bottom, 24)
-                    }
-                }
-                
-                ZStack(alignment: .bottom) {
-            }
-            .task {
-                fetchTask = Task {
-                    await viewModel.fetchRoutes()
                 }
             }
             .padding(.horizontal, 16)
@@ -91,6 +64,9 @@ struct TicketListView: View {
                     BackButton(action: { dismiss() })
                 }
             }
+        }
+        .task {
+            await viewModel.fetchRoutes()
         }
     }
 }

@@ -35,25 +35,40 @@ struct ContentView: View {
                     case .cityPicker(let fromField):
                         CitiesListView(
                             onSettlementSelected: { settlement in
+                                if fromField {
+                                    coordinator.selectedCityFrom = settlement.title
+                                    coordinator.selectedSettlementFrom = settlement
+                                } else {
+                                    coordinator.selectedCityTo = settlement.title
+                                    coordinator.selectedSettlementTo = settlement
+                                }
                                 coordinator.path.append(RouteEnum.stationPicker(settlement: settlement, fromField: fromField))
                             }
                         )
                     case .stationPicker(let settlement, let fromField):
                         StationListView(
-                            viewModel: StationListViewModel(settlement: settlement),
-                            onStationSelected: { station in
-                                if fromField {
-                                    coordinator.selectedCityFrom = settlement.title
-                                    coordinator.selectedStationFrom = station.title
-                                } else {
-                                    coordinator.selectedCityTo = settlement.title
-                                    coordinator.selectedStationTo = station.title
-                                }
-                                coordinator.path = NavigationPath()
+                        viewModel: StationListViewModel(settlement: settlement),
+                        onStationSelected: { station in
+                            if fromField {
+                                coordinator.selectedStationFrom = station.title
+                                coordinator.selectedStationFromObject = station
+                            } else {
+                                coordinator.selectedStationTo = station.title
+                                coordinator.selectedStationToObject = station
                             }
+                            coordinator.path = NavigationPath()
+                        }
+                    )
+                    case .tickets(let settlementFrom, let stationFrom, let settlementTo, let stationTo):
+                        TicketListView(
+                            coordinator: coordinator,
+                            viewModel: TicketListViewModel(
+                                settlementFrom: settlementFrom,
+                                stationFrom: stationFrom,
+                                settlementTo: settlementTo,
+                                stationTo: stationTo
+                            )
                         )
-                    case .tickets:
-                        TicketListView(coordinator: coordinator, viewModel: TicketListViewModel())
                     case .filters:
                         FiltersView(coordinator: coordinator)
                     case .carrierInfo(let ticket):

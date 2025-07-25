@@ -9,7 +9,7 @@ import Foundation
 enum RouteEnum: Hashable {
     case cityPicker(fromField: Bool)
     case stationPicker(settlement: Settlement, fromField: Bool)
-    case tickets
+    case tickets(settlementFrom: Settlement, stationFrom: Station, settlementTo: Settlement, stationTo: Station)
     case filters
     case carrierInfo(TicketModel)
 }

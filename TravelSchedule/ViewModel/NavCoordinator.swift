@@ -15,10 +15,25 @@ final class NavCoordinator: ObservableObject {
     @Published var selectedStationTo: String = ""
     @Published var timeFilters: Set<PeriodicEnum> = []
     @Published var showTransfers: Bool? = nil
-    @Published var selectedStationFromCode: String = ""
-    @Published var selectedStationToCode: String = ""
+    
+    // Добавляем хранилище для объектов
+    @Published var selectedSettlementFrom: Settlement?
+    @Published var selectedStationFromObject: Station?
+    @Published var selectedSettlementTo: Settlement?
+    @Published var selectedStationToObject: Station?
     
     var isFiltersValid: Bool {
         !timeFilters.isEmpty && showTransfers != nil
+    }
+    
+    func resetSelection() {
+        selectedCityFrom = ""
+        selectedStationFrom = ""
+        selectedCityTo = ""
+        selectedStationTo = ""
+        selectedSettlementFrom = nil
+        selectedStationFromObject = nil
+        selectedSettlementTo = nil
+        selectedStationToObject = nil
     }
 }

@@ -53,6 +53,7 @@ struct MainView: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 0) {
                                 NavigationLink(value: RouteEnum.cityPicker(fromField: true)) {
+     
                                     Text(fromTofromTo ? (coordinator.selectedCityFrom.isEmpty ? "Откуда" : "\(coordinator.selectedCityFrom) (\(coordinator.selectedStationFrom))")
                                          : (coordinator.selectedCityTo.isEmpty ? "Куда" : "\(coordinator.selectedCityTo) (\(coordinator.selectedStationTo))")
                                     )
@@ -94,7 +95,11 @@ struct MainView: View {
                             Button(action: {
                                 swap(&coordinator.selectedCityFrom, &coordinator.selectedCityTo)
                                 swap(&coordinator.selectedStationFrom, &coordinator.selectedStationTo)
-                                swap(&coordinator.selectedStationFromCode, &coordinator.selectedStationToCode) }){
+                                
+                                // Свап объектов
+                                swap(&coordinator.selectedSettlementFrom, &coordinator.selectedSettlementTo)
+                                swap(&coordinator.selectedStationFromObject, &coordinator.selectedStationToObject)
+                            }){
                                 Image(.changeButtonIcon)
                                     .font(.system(size: 24))
                                     .foregroundStyle(.blue)
@@ -111,7 +116,18 @@ struct MainView: View {
                     
                     if !coordinator.selectedCityTo.isEmpty && !coordinator.selectedCityFrom.isEmpty {
                         Button(action: {
-                            coordinator.path.append(RouteEnum.tickets)
+                            if let settlementFrom = coordinator.selectedSettlementFrom,
+                               let stationFrom = coordinator.selectedStationFromObject,
+                               let settlementTo = coordinator.selectedSettlementTo,
+                               let stationTo = coordinator.selectedStationToObject {
+                                
+                                coordinator.path.append(RouteEnum.tickets(
+                                    settlementFrom: settlementFrom,
+                                    stationFrom: stationFrom,
+                                    settlementTo: settlementTo,
+                                    stationTo: stationTo
+                                ))
+                            }
                         }) {
                             Text("Найти")
                                 .font(.bold17)
