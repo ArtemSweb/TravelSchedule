@@ -13,6 +13,14 @@ struct TicketListView: View {
     @Environment(\.dismiss) var dismiss
     @State private var fetchTask: Task<Void, Never>?
     
+    private func updateFilters() {
+            let newFilters = Filters(
+                dayParts: coordinator.timeFilters,
+                showTransfers: coordinator.showTransfers
+            )
+            viewModel.applyFilters(value: newFilters)
+        }
+    
     var body: some View {
         ZStack {
             Color.whiteApp
@@ -54,6 +62,15 @@ struct TicketListView: View {
             fetchTask = Task {
                 await viewModel.fetchRoutes()
             }
+        }
+        .onAppear {
+            updateFilters() // Применяем начальные фильтры
+        }
+        .onChange(of: coordinator.timeFilters) { _, _ in
+            updateFilters() // Реагируем на изменение периодов
+        }
+        .onChange(of: coordinator.showTransfers) { _, _ in
+            updateFilters() // Реагируем на изменение фильтра пересадок
         }
     }
 }
@@ -153,6 +170,3 @@ private struct BackButton: View {
         }
     }
 }
-
-// MARK: - Extensions
-
