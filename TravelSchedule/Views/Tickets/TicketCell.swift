@@ -51,7 +51,7 @@ struct TicketCell: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top) {
+            HStack(alignment: .center) {
                 SVGImageView(svgURL: URL(string: ticket.carrier.logoSVG))
                     .frame(width: 38, height: 38)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -70,7 +70,7 @@ struct TicketCell: View {
                     .font(.regular12)
                     .foregroundStyle(.blackUni)
             }
-            .padding(.bottom, 5)
+            .padding(.bottom, 15)
             HStack {
                 Text(formattedTime(from: ticket.departure))
                     .font(.regular17)

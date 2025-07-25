@@ -11,6 +11,7 @@ struct TicketListView: View {
     @ObservedObject var coordinator: NavCoordinator
     @ObservedObject var viewModel: TicketListViewModel
     @Environment(\.dismiss) var dismiss
+    @State private var fetchTask: Task<Void, Never>?
     
     var body: some View {
         ZStack {
@@ -31,7 +32,7 @@ struct TicketListView: View {
                         ZStack(alignment: .bottom) {
                             TicketsScrollView(tickets: viewModel.filteredRoutes, coordinator: coordinator)
                             
-                            FilterButton(coordinator: coordinator)
+                            FilterButton(coordinator: coordinator, viewModel: viewModel)
                                 .padding(.bottom, 24)
                         }
                     } else {
@@ -50,7 +51,9 @@ struct TicketListView: View {
             }
         }
         .task {
-            await viewModel.fetchRoutes()
+            fetchTask = Task {
+                await viewModel.fetchRoutes()
+            }
         }
     }
 }
@@ -101,19 +104,6 @@ private struct EmptyTicketsView: View {
     }
 }
 
-//private struct ErrorView: View {
-//    var body: some View {
-//        VStack {
-//            Text("Ошибка загрузки")
-//                .font(.bold24)
-//                .foregroundStyle(.blackApp)
-//            Text("Попробуйте позже")
-//                .font(.regular17)
-//                .foregroundStyle(.gray)
-//        }
-//    }
-//}
-
 private struct TicketButton: View {
     let ticket: Route
     let action: () -> Void
@@ -127,6 +117,7 @@ private struct TicketButton: View {
 
 private struct FilterButton: View {
     @ObservedObject var coordinator: NavCoordinator
+    @ObservedObject var viewModel: TicketListViewModel
     
     var body: some View {
         Button(action: {
@@ -137,7 +128,7 @@ private struct FilterButton: View {
                     .font(.bold17)
                     .foregroundStyle(.whiteUni)
                 
-                if coordinator.isFiltersValid {
+                if !viewModel.filters.isEmpty {
                     Circle()
                         .foregroundStyle(.redUni)
                         .frame(width: 8, height: 8)

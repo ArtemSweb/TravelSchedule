@@ -30,14 +30,14 @@ final class TicketListViewModel: ObservableObject, Identifiable {
         }
     }
         
-    private let dataProvider: DataProviderProtocol
+    private let dataProvider: any DataProviderProtocol
     
     init(
         settlementFrom: Settlement,
         stationFrom: Station,
         settlementTo: Settlement,
         stationTo: Station,
-        dataProvider: DataProviderProtocol = DataProvider.shared
+        dataProvider: any DataProviderProtocol = DataProvider.shared
     ) {
         self.settlementFrom = settlementFrom
         self.stationFrom = stationFrom

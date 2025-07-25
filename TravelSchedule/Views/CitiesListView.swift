@@ -34,6 +34,8 @@ struct CitiesListView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar { toolbarContent }
     }
 
     // MARK: - Private view
@@ -44,14 +46,14 @@ struct CitiesListView: View {
             cityList
         }
         .task {
-            fetchTask = Task {
-                await viewModel.fetchSettlements()
+            if viewModel.allSettlements.isEmpty {
+                fetchTask = Task {
+                    await viewModel.fetchSettlements()
+                }
             }
         }
         .padding(.horizontal, 16)
         .scrollIndicators(.hidden)
-        .navigationBarBackButtonHidden(true)
-        .toolbar { toolbarContent }
     }
     
     private var cityList: some View {

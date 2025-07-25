@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol DataProviderProtocol {
+protocol DataProviderProtocol: Actor {
     func fetchSettlements() async throws -> [Settlement]
     func fetchRoutes(from: Station, to: Station) async throws -> [Route]
 }
