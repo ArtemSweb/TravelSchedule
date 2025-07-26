@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AC0CCBBD2E32E13200CC360B /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AC0CCBBC2E32E13200CC360B /* SDWebImageSwiftUI */; };
-		AC0CCBC02E32E16000CC360B /* SDWebImageSVGKitPlugin in Frameworks */ = {isa = PBXBuildFile; productRef = AC0CCBBF2E32E16000CC360B /* SDWebImageSVGKitPlugin */; };
 		AC9818572DF0E1040096A885 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = AC9818562DF0E1040096A885 /* OpenAPIRuntime */; };
 		AC98185A2DF0E1130096A885 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = AC9818592DF0E1130096A885 /* OpenAPIURLSession */; };
 /* End PBXBuildFile section */
@@ -59,8 +57,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC0CCBBD2E32E13200CC360B /* SDWebImageSwiftUI in Frameworks */,
-				AC0CCBC02E32E16000CC360B /* SDWebImageSVGKitPlugin in Frameworks */,
 				AC9818572DF0E1040096A885 /* OpenAPIRuntime in Frameworks */,
 				AC98185A2DF0E1130096A885 /* OpenAPIURLSession in Frameworks */,
 			);
@@ -117,8 +113,6 @@
 			packageProductDependencies = (
 				AC9818562DF0E1040096A885 /* OpenAPIRuntime */,
 				AC9818592DF0E1130096A885 /* OpenAPIURLSession */,
-				AC0CCBBC2E32E13200CC360B /* SDWebImageSwiftUI */,
-				AC0CCBBF2E32E16000CC360B /* SDWebImageSVGKitPlugin */,
 			);
 			productName = TravelSchedule;
 			productReference = AC9BFEF32DE8ED6200CC398E /* TravelSchedule.app */;
@@ -179,8 +173,6 @@
 				AC9818552DF0E1040096A885 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				AC9818582DF0E1130096A885 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
 				AC98185B2DF0E1510096A885 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */,
-				AC0CCBBB2E32E11700CC360B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
-				AC0CCBBE2E32E16000CC360B /* XCRemoteSwiftPackageReference "SDWebImageSVGKitPlugin" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AC9BFEF42DE8ED6200CC398E /* Products */;
@@ -496,22 +488,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AC0CCBBB2E32E11700CC360B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 3.1.3;
-			};
-		};
-		AC0CCBBE2E32E16000CC360B /* XCRemoteSwiftPackageReference "SDWebImageSVGKitPlugin" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SDWebImage/SDWebImageSVGKitPlugin";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
 		AC9818552DF0E1040096A885 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-runtime/";
@@ -539,16 +515,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		AC0CCBBC2E32E13200CC360B /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AC0CCBBB2E32E11700CC360B /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
-		};
-		AC0CCBBF2E32E16000CC360B /* SDWebImageSVGKitPlugin */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = AC0CCBBE2E32E16000CC360B /* XCRemoteSwiftPackageReference "SDWebImageSVGKitPlugin" */;
-			productName = SDWebImageSVGKitPlugin;
-		};
 		AC9818562DF0E1040096A885 /* OpenAPIRuntime */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = AC9818552DF0E1040096A885 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */;

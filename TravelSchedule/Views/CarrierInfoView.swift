@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SDWebImageSwiftUI
 
 struct CarrierInfoView: View {
     @Environment(\.dismiss) var dismiss
