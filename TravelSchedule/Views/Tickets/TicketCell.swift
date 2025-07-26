@@ -50,11 +50,34 @@ struct TicketCell: View {
     }
 
     var body: some View {
+        
+        let url = URL(string: ticket.carrier.logoURL)
+        
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
-                SVGImageView(svgURL: URL(string: ticket.carrier.logoSVG))
-                    .frame(width: 38, height: 38)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                AsyncImage(
+                    url: url,
+                    transaction: Transaction(animation: .easeInOut)
+                ) { phase in
+                    switch phase {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 38)
+                            .transition(.scale(scale: 0.1, anchor: .leading))
+                    case .failure:
+                        Image(systemName: "wifi.slash")
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                .frame(width: 38, height: 38)
+                .background(.whiteUni)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+                
                 VStack(alignment: .leading, spacing: 2) {
                     Text(ticket.carrier.title)
                         .font(.regular17)

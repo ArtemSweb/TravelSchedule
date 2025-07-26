@@ -7,4 +7,8 @@ struct Carrier: Hashable, Sendable {
     let logoFull: String
     let email: String?
     let phone: String?
+    
+    var logoURL: String {
+        self.logoSVG.isEmpty ? self.logoFull : self.logoSVG
+    }
 }

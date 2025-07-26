@@ -32,7 +32,6 @@ final class CitiesListViewModel: ObservableObject {
     }
     
     func fetchSettlements() async {
-        print("CitiesListViewModel: fetchSettlements")
         guard !isLoading else { return }
         isLoading = true
         loadingFailed = false

@@ -6,21 +6,35 @@
 //
 
 import SwiftUI
-
+import SDWebImageSwiftUI
 
 struct CarrierInfoView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var viewModel: CarrierInfoViewModel
     
     var body: some View {
+        let url = URL(string: viewModel.logoURL)
+        
         ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             
             VStack(alignment: .center) {
-                SVGImageView(svgURL: URL(string: viewModel.logoURL))
-                    .frame(width: 38, height: 38)
-                    .clipShape(RoundedRectangle(cornerRadius: 24))
+                ZStack {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 104)
+                    } placeholder: {
+                        ProgressView()
+                            .frame(width: 50, height: 50)
+                    }
+                }
+                .frame(maxWidth: .infinity, minHeight: 104)
+                .background(.whiteUni)
+                .clipShape(RoundedRectangle(cornerRadius: 24))
+                
                 HStack {
                     VStack(alignment: .leading) {
                         Text(viewModel.title)

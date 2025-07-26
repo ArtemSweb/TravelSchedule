@@ -20,7 +20,7 @@ final class CarrierInfoViewModel: ObservableObject {
     }
     
     var logoURL: String {
-        carrier.carrier.logoSVG
+        carrier.carrier.logoSVG.isEmpty  ? carrier.carrier.logoFull : carrier.carrier.logoSVG
     }
     
     var email: String {

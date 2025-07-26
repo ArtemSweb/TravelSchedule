@@ -38,7 +38,7 @@ struct TicketListView: View {
                 } else {
                     if !viewModel.filteredRoutes.isEmpty {
                         ZStack(alignment: .bottom) {
-                            TicketsScrollView(tickets: viewModel.filteredRoutes, coordinator: coordinator)
+                            TicketsScrollView(routes: viewModel.filteredRoutes, coordinator: coordinator)
                             
                             FilterButton(coordinator: coordinator, viewModel: viewModel)
                                 .padding(.bottom, 24)
@@ -92,15 +92,15 @@ private struct RouteHeaderView: View {
 }
 
 private struct TicketsScrollView: View {
-    let tickets: [Route]
+    let routes: [Route]
     let coordinator: NavCoordinator
     
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 8) {
-                ForEach(tickets) { ticket in
-                    TicketButton(ticket: ticket, action: {
-                        coordinator.path.append(RouteEnum.carrierInfo(ticket))
+                ForEach(routes) { route in
+                    TicketButton(ticket: route, action: {
+                        coordinator.path.append(RouteEnum.carrierInfo(route))
                     })
                 }
             }
