@@ -72,7 +72,7 @@ struct ContentView: View {
                     case .filters:
                         FiltersView(coordinator: coordinator)
                     case .carrierInfo(let ticket):
-                        CarrierInfoView(carrier: ticket)
+                        CarrierInfoView(viewModel: CarrierInfoViewModel(carrier: ticket))
                     }
                 }
             }

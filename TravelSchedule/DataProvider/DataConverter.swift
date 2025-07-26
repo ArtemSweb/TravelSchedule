@@ -40,16 +40,15 @@ struct DataConverter {
         let dateFormatter = ISO8601DateFormatter()
         dateFormatter.formatOptions = [.withFullDate, .withDashSeparatorInDate, .withTime, .withColonSeparatorInTime]
         
-        return segments.compactMap { segment in
+        return try! segments.compactMap { segment in
             guard
-                let id = segment.thread?.uid,
                 let startDateString = segment.start_date,
                 let departureTimeString = segment.departure,
                 let arrivalTimeString = segment.arrival,
                 let durationSeconds = segment.duration,
                 let carrierData = segment.thread?.carrier
             else {
-                return nil
+                throw DataConverterError.dataConversionError
             }
             
             let departureDateString = "\(startDateString)T\(departureTimeString)"
@@ -60,7 +59,7 @@ struct DataConverter {
                 let arrival = dateFormatter.date(from: arrivalDateString),
                 let date = dateFormatter.date(from: "\(startDateString)T00:00:00")
             else {
-                return nil
+                throw DataConverterError.dataConversionError
             }
             
             let carrier = Carrier(
@@ -73,11 +72,10 @@ struct DataConverter {
             )
             
             return Route(
-                id: id,
                 date: date,
                 departure: departure,
                 arrival: arrival,
-                durationSeconds: durationSeconds,
+                durationSeconds: Int(durationSeconds),
                 hasTransfers: segment.has_transfers ?? false,
                 transferPoint: nil,
                 carrier: carrier

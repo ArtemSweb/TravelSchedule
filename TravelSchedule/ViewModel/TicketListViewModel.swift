@@ -53,6 +53,8 @@ final class TicketListViewModel: ObservableObject, Identifiable {
     func fetchRoutes() async {
         isLoading = true
         loadingFailed = false
+        print(stationFrom)
+        print(stationTo)
         do {
             allRoutes = try await dataProvider.fetchRoutes(from: stationFrom, to: stationTo)
         } catch {

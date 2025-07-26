@@ -26,7 +26,7 @@ struct Filters {
 }
 
 struct Route: Hashable, Identifiable, Sendable {
-    let id: String
+    let id = UUID()
     let date: Date
     let departure: Date
     let arrival: Date
