@@ -8,8 +8,8 @@ import Foundation
 
 enum RouteEnum: Hashable {
     case cityPicker(fromField: Bool)
-    case stationPicker(city: String, fromField: Bool)
-    case tickets
+    case stationPicker(settlement: Settlement, fromField: Bool)
+    case tickets(settlementFrom: Settlement, stationFrom: Station, settlementTo: Settlement, stationTo: Station)
     case filters
-    case carrierInfo(TicketModel)
+    case carrierInfo(Route)
 }

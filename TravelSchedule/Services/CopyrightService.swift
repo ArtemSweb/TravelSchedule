@@ -1,9 +1,5 @@
-//
-//  CopyrightService.swift
-//  TravelSchedule
-//
-//  Created by Артем Солодовников on 11.06.2025.
-//
+import OpenAPIRuntime
+import OpenAPIURLSession
 
 typealias Copyright = Components.Schemas.Copyright
 
@@ -12,6 +8,9 @@ protocol CopyrightServiceProtocol {
 }
 
 final class CopyrightService: CopyrightServiceProtocol {
+    enum CopyrightServiceError: Error {
+        case missingCopyright
+    }
     
     private let client: Client
     
@@ -21,8 +20,9 @@ final class CopyrightService: CopyrightServiceProtocol {
     
     func getCopyright() async throws -> Copyright {
         let response = try await client.getCopyright(query: .init())
-        
-        return try response.ok.body.json
+        guard let copyright = try response.ok.body.json.copyright else {
+            throw CopyrightServiceError.missingCopyright
+        }
+        return copyright
     }
-    
 }

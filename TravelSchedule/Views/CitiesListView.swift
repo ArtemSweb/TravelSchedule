@@ -1,5 +1,5 @@
 //
-//  ChangeCityView.swift
+//  CitiesListView.swift
 //  TravelSchedule
 //
 //  Created by Артем Солодовников on 01.07.2025.
@@ -7,76 +7,78 @@
 
 import SwiftUI
 
-// MARK: - ChangeCityView
+// MARK: - CitiesListView
 
-struct ChangeCityView: View {
+struct CitiesListView: View {
     
     // MARK: - Properties
-    @State private var searchText = ""
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var coordinator: NavCoordinator
-    let fromField: Bool
+    @StateObject var viewModel = CitiesListViewModel()
+    @State private var fetchTask: Task<Void, Never>?
     
-    // MARK: - Private properties
-    private let cities = [
-        "Москва", "Санкт-Петербург", "Сочи",
-        "Горный воздух", "Краснодар", "Казань", "Омск"
-    ]
-
-    private var filteredItems: [String] {
-        guard !searchText.isEmpty else { return cities }
-        return cities.filter { $0.localizedCaseInsensitiveContains(searchText) }
-    }
+    let onSettlementSelected: (Settlement) -> Void
     
     // MARK: - Content
     var body: some View {
         ZStack {
             Color.whiteApp.ignoresSafeArea()
-            content
+            
+            if viewModel.isLoading {
+                ProgressView()
+            } else if viewModel.loadingFailed {
+                VStack {
+                    Text("Ошибка")
+                }
+            } else {
+                content
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar { toolbarContent }
     }
 
     // MARK: - Private view
 
     private var content: some View {
         VStack(spacing: .zero) {
-            CustomSearchBar(text: $searchText, placeholder: "Введите запрос")
+            CustomSearchBar(text: $viewModel.searchText, placeholder: "Введите запрос")
             cityList
+        }
+        .task {
+            if viewModel.allSettlements.isEmpty {
+                fetchTask = Task {
+                    await viewModel.fetchSettlements()
+                }
+            }
         }
         .padding(.horizontal, 16)
         .scrollIndicators(.hidden)
-        .navigationBarBackButtonHidden(true)
-        .toolbar { toolbarContent }
     }
     
     private var cityList: some View {
         ScrollView(.vertical) {
             LazyVStack(alignment: .leading) {
-                if !filteredItems.isEmpty {
-                    ForEach(filteredItems, id: \.self) { city in
-                        cityButton(for: city)
-                    }
-                } else {
+                if viewModel.filteredSettlements.isEmpty && viewModel.isSearching {
                     emptyState
+                } else {
+                    ForEach(viewModel.filteredSettlements) { settlement in
+                        cityButton(for: settlement)
+                    }
+                    .listRowSeparator(.hidden)
+                    .listRowInsets(EdgeInsets())
+                    .background(.whiteApp)
                 }
             }
         }
     }
     
-    private func cityButton(for city: String) -> some View {
+    private func cityButton(for settlement: Settlement) -> some View {
         Button(action: {
-            if fromField {
-                coordinator.selectedCityFrom = city
-                coordinator.selectedStationFrom = ""
-            } else {
-                coordinator.selectedCityTo = city
-                coordinator.selectedStationTo = ""
-            }
-            coordinator.path.append(RouteEnum.stationPicker(city: city, fromField: fromField))
-        }) {
+                onSettlementSelected(settlement)
+            }) {
             HStack {
-                Text(city)
+                Text(settlement.title)
                     .font(.regular17)
                     .foregroundStyle(.blackApp)
 
@@ -124,9 +126,9 @@ struct ChangeCityView: View {
 
 // MARK: - ChangeCityView_Preview
 
-#Preview {
-    ChangeCityView(
-        coordinator: NavCoordinator(),
-        fromField: true
-    )
-}
+//#Preview {
+//    CitiesListView(
+//        coordinator: NavCoordinator(),
+//        fromField: true
+//    )
+//}

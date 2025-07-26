@@ -4,20 +4,20 @@
 //
 //  Created by Артем Солодовников on 11.06.2025.
 //
-
 import OpenAPIURLSession
 
 final class ServiceManager {
     static let shared = ServiceManager()
     private init() {}
 
-    private var searchService: SearchService?
-    private var scheduleService: ScheduleService?
-    private var threadService: ThreadService?
+    // MARK: - Private Service Properties
+    private var scheduleBetweenStationsService: ScheduleBetweenStationsService?
+    private var scheduleForStationService: ScheduleForStationService?
+    private var scheduleThreadService: ScheduleThreadService?
     private var nearestStationsService: NearestStationsService?
     private var nearestSettlementService: NearestSettlementService?
     private var carrierService: CarrierService?
-    private var stationListService: StationListService?
+    private var stationsListService: StationsListService?
     private var copyrightService: CopyrightService?
     
     private var client: Client? {
@@ -25,51 +25,50 @@ final class ServiceManager {
     }
     
     // MARK: - Schedule Between Stations
-    func getScheduleBetweenStation(from: String, to: String) async throws -> ScheduleBetweenStations {
+    func getScheduleBetweenStations(from: String, to: String) async throws -> ScheduleBetweenStations {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
-        if searchService == nil {
-            searchService = SearchService(client: client)
+        if scheduleBetweenStationsService == nil {
+            scheduleBetweenStationsService = ScheduleBetweenStationsService(client: client)
         }
         
-        guard let service = searchService else {
+        guard let service = scheduleBetweenStationsService else {
             throw NetworkError.serviceInitializationFailed
         }
         
-        return try await service.getSheduleBetweenStation(from: from, to: to)
+        return try await service.getScheduleBetweenStations(from: from, to: to)
     }
     
-    
     // MARK: - Schedule for Station
-    func getScheduleForStation(station: String) async throws -> ListOfSchedules {
+    func getScheduleForStation(station: String) async throws -> ScheduleForStation {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
-        if scheduleService == nil {
-            scheduleService = ScheduleService(client: client)
+        if scheduleForStationService == nil {
+            scheduleForStationService = ScheduleForStationService(client: client)
         }
         
-        guard let service = scheduleService else {
+        guard let service = scheduleForStationService else {
             throw NetworkError.serviceInitializationFailed
         }
         
-        return try await service.getScheduleForStation(station: station)
+        return try await service.getScheduleForStation(station)
     }
     
     // MARK: - Schedule Thread
-    func getScheduleThread(uid: String) async throws -> ThreadStations {
+    func getScheduleThread(uid: String) async throws -> ScheduleThread {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
-        if threadService == nil {
-            threadService = ThreadService(client: client)
+        if scheduleThreadService == nil {
+            scheduleThreadService = ScheduleThreadService(client: client)
         }
         
-        guard let service = threadService else {
+        guard let service = scheduleThreadService else {
             throw NetworkError.serviceInitializationFailed
         }
         
         return try await service.getThread(uid: uid)
     }
-
+    
     // MARK: - Nearest Stations
     func getNearestStations(lat: Double, lng: Double, distance: Int) async throws -> NearestStations {
         guard let client = client else { throw NetworkError.clientUnavailable }
@@ -86,7 +85,7 @@ final class ServiceManager {
     }
     
     // MARK: - Nearest Settlement
-    func getNearestSettlement(lat: Double, lng: Double) async throws -> NearestSettlement {
+    func getNearestSettlement(lat: Double, lng: Double, distance: Int) async throws -> NearestSettlement {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if nearestSettlementService == nil {
@@ -97,11 +96,11 @@ final class ServiceManager {
             throw NetworkError.serviceInitializationFailed
         }
         
-        return try await service.getNearestSettlement(lat: lat, lng: lng)
+        return try await service.getNearestSettlement(lat: lat, lng: lng, distance: distance)
     }
     
     // MARK: - Carrier
-    func getCarrier(code: String) async throws -> Carrier {
+    func getCarrier(code: String) async throws -> ThreadCarrier {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
         if carrierService == nil {
@@ -111,6 +110,7 @@ final class ServiceManager {
         guard let service = carrierService else {
             throw NetworkError.serviceInitializationFailed
         }
+        
         return try await service.getCarrier(code: code)
     }
     
@@ -118,11 +118,11 @@ final class ServiceManager {
     func getStationsList() async throws -> StationsList {
         guard let client = client else { throw NetworkError.clientUnavailable }
         
-        if stationListService == nil {
-            stationListService = StationListService(client: client)
+        if stationsListService == nil {
+            stationsListService = StationsListService(client: client)
         }
         
-        guard let service = stationListService else {
+        guard let service = stationsListService else {
             throw NetworkError.serviceInitializationFailed
         }
         

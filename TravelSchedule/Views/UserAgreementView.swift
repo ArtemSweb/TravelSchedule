@@ -35,7 +35,7 @@ struct UserAgreementView: View {
                         }
                     }
             } else {
-                ServerErrorView()
+                ErrorView(errorType: .connectionError)
             }
         }
         .navigationBarTitleDisplayMode(.inline)

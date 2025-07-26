@@ -7,36 +7,52 @@
 
 import SwiftUI
 
-
 struct CarrierInfoView: View {
     @Environment(\.dismiss) var dismiss
-    
-    let carrier: TicketModel
+    @ObservedObject var viewModel: CarrierInfoViewModel
     
     var body: some View {
+        let url = URL(string: viewModel.logoURL)
+        
         ZStack {
             Color.whiteApp
                 .ignoresSafeArea()
             
-            VStack(alignment: .leading) {
-                Image(.mockCarrierLogo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(minWidth: 343)
+            VStack(alignment: .center) {
+                ZStack {
+                    AsyncImage(url: url) { image in
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 104)
+                    } placeholder: {
+                        ProgressView()
+                            .frame(width: 50, height: 50)
+                    }
+                }
+                .frame(maxWidth: .infinity, minHeight: 104)
+                .background(.whiteUni)
+                .clipShape(RoundedRectangle(cornerRadius: 24))
                 
-                Text(carrier.operatorName)
-                    .font(.bold24)
-                    .padding(.vertical, 16)
-                    .foregroundColor(.blackApp)
-                
-                VStack(alignment: .leading, spacing: 24) {
-                    CarrierLinkView(linkTitle: "E-mail", linkText: "solodovnikov-artem@inbox.ru", linkUrl: "mailto:solodovnikov-artem@inbox.ru")
-                    
-                    CarrierLinkView(linkTitle: "Телефон", linkText: "+7 (911) 123-45-67", linkUrl: "tel:+79111234567")
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text(viewModel.title)
+                            .font(.bold24)
+                            .padding(.vertical, 16)
+                            .foregroundColor(.blackApp)
+                        
+                        VStack(alignment: .leading, spacing: 24) {
+                            CarrierLinkView(linkTitle: "E-mail", linkText: viewModel.email, linkUrl: "mailto:\(viewModel.email)")
+                            
+                            CarrierLinkView(linkTitle: "Телефон", linkText: viewModel.phone, linkUrl: "tel:\(viewModel.phone)")
+                        }
+                    }
+                    Spacer()
                 }
                 Spacer()
+
             }
-            .padding(.init(top: 0, leading: 16, bottom: 0, trailing: 16))
+            .padding(.horizontal, 16)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -56,6 +72,6 @@ struct CarrierInfoView: View {
     }
 }
 
-#Preview {
-    CarrierInfoView(carrier: TicketModel.init(operatorName: "ОАО «РЖД»", date: "14 января", departure: "22:30", arrival: "08:15", duration: "20 часов", withTransfer: true, operatorLogo: "mock_RJD", note: "С пересадкой в Костроме"))
-}
+//#Preview {
+//    CarrierInfoView(carrier: Route(id: "123", date: <#T##Date#>, departure: <#T##Date#>, arrival: <#T##Date#>, durationSeconds: 600, hasTransfers: false, transferPoint: <#T##String?#>, carrier: <#T##Carrier#>))
+//}
